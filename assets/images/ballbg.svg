@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="360px" height="760px" viewBox="0 0 360 760" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Quiz Thanks Copy</title>
+    <g id="Quiz-Thanks-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="360" height="760"></rect>
+        <circle id="Oval" fill="#FF3366" opacity="0.19984654" cx="265" cy="36" r="8"></circle>
+        <circle id="Oval" fill="#6DD400" opacity="0.19984654" cx="249" cy="290" r="8"></circle>
+        <circle id="Oval" fill="#0091FF" opacity="0.19984654" cx="71" cy="274" r="8"></circle>
+        <circle id="Oval" fill="#44D7B6" opacity="0.19984654" cx="126" cy="80" r="8"></circle>
+        <circle id="Oval" fill="#0091FF" opacity="0.19984654" cx="273" cy="137" r="5"></circle>
+    </g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="236px" height="242px" viewBox="0 0 236 242" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Oval</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#25306a" offset="0%"></stop>
+            <stop stop-color="#25306a" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.0415504092">
+        <g id="ic_chevron_left_24px" fill="url(#linearGradient-1)" transform="translate(-124.000000, -118.000000)">
+            <circle id="Oval" cx="180" cy="180" r="180"></circle>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "213998669210",
+    "project_id": "r9bazaar-ea38a",
+    "storage_bucket": "r9bazaar-ea38a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213998669210:android:943bf858e4a4f588d9be23",
+        "android_client_info": {
+          "package_name": "com.apitechnosoft.rbazaar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213998669210-3nafvs704oats7e5vgofvenj1arfjna3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apitechnosoft.rbazaar",
+            "certificate_hash": "58c07836c288505a3eba52373f471ec5fc0c31e2"
+          }
+        },
+        {
+          "client_id": "213998669210-2rgda7gjl33ieh44t5at9rqeslg7s9fe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBrf8-8Bn4CVjLOC_7GLf1P5QKyQmVTkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213998669210-2rgda7gjl33ieh44t5at9rqeslg7s9fe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
