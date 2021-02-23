@@ -15,5 +15,9 @@ class MyColors{
   static const Color lightgreen= const Color(0xFFDBF7F0);
   static const Color lightgrey= const Color(0xFFD6D6D6);
   static const Color lightgreenprogress= const Color(0xFF81C784);
+  static const Color lightpink= const Color(0xFFFFEBEE);
+  static const Color lightyellow1= const Color(0xFFFFFDE7);
+  static const Color lightblue1= const Color(0xFFE8EAF6);
+  static const Color amberPrimaryValue= const Color(0xFFFFF8E1);
 
 }

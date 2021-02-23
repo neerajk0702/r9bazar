@@ -34,11 +34,11 @@ class _SplashScreenState extends State<SplashScreen> {
           alignment: Alignment.center,
           height: double.infinity,
           width: double.infinity,
-          child: Center( child: Container(width: 400, height: 400,
+          child: Center( child: Container(width: 200, height: 200,
             child: FittedBox(
                 fit: BoxFit.fill,
                 child: Image.asset(
-                  'assets/images/launcher.jpg',
+                  'assets/images/logonew.png',
                 )),
           ),)),
     );

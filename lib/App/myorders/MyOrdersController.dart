@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:rbazaar/App/Home/AccountdetailModel.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/address/StateModel.dart';
+import 'package:rbazaar/App/orderplace/UpdateOrderPaymentStatusModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 import 'package:rbazaar/utils/showtoast.dart';
 
@@ -57,6 +58,12 @@ class MyOrdersController extends GetxController {
 
   changephone(value) => this._phone.value = value;
 
+  final _Reason = "".obs;
+
+  get Reason => this._Reason.value;
+
+  changeReason(value) => this._Reason.value = value;
+
   Future<bool> accountDetailsSC() async {
     bool doneFlage=false;
     try {
@@ -80,6 +87,39 @@ class MyOrdersController extends GetxController {
             changeError("No data found!");
           }*/
           changeProcessing(true);
+        }else{
+          showOfflineToast1();
+        }
+        changeProcessing(true);
+      }
+    } catch (e) {
+      changeProcessing(false);
+      changeError(e.toString());
+    }
+
+    return doneFlage;
+  }
+
+  Future<bool> CancelOrder(int sno,int saleID,String orderID,String reason,String userID) async {
+    bool doneFlage=false;
+    try {
+      if(reason.length<=10){
+        changeError("Please enter reason for cancel your order more then 10 words!");
+        return doneFlage;
+      }
+      SharedPref pref = SharedPref();
+      var userInfo = await pref.read("userId");
+      if(userInfo!=null && userInfo!='') {
+        if (await CommonUtills.ConnectionStatus() == true) {
+          changeProcessing(false);
+          UpdateOrderPaymentStatusModel data = await serviceCaller.CancelOrderSC( sno, saleID, orderID, reason, userID);
+          if(data!=null && data.status=='true'){
+            doneFlage=true;
+            changeReason("");
+            changeError("Your order has been Canceled successfully");
+          }else{
+            changeError("Your order has not been Canceled!");
+          }
         }else{
           showOfflineToast1();
         }

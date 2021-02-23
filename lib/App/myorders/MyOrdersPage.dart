@@ -39,7 +39,7 @@ class MyOrdersPageState extends State<MyOrdersPage> {
         body: Container(
       height: Get.height,
       width: Get.width,
-      color: Colors.white,
+          color: MyColors.lightblue1,
       child: Stack(
         children: [
           Column(
@@ -262,6 +262,20 @@ class MyOrdersPageState extends State<MyOrdersPage> {
                           ),
                         ),
                       ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        margin: const EdgeInsets.only(
+                            bottom: 3, top: 0, left: 5, right: 10),
+                        child: Text(
+                          getOrderStatus(
+                              data?.orderStatus),
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                       // _getProductsaveDetails(data),
                     ],
                   ))
@@ -270,5 +284,16 @@ class MyOrdersPageState extends State<MyOrdersPage> {
             ])),
       ),
     );
+  }
+  getOrderStatus(String orderStatus) {
+    if (orderStatus == 'P') {
+      return 'Pending';
+    } else if (orderStatus == 'C') {
+      return 'Complete';
+    } else if (orderStatus == 'CC') {
+      return 'Cancel';
+    } else {
+      return 'Pending';
+    }
   }
 }

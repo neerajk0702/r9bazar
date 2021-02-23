@@ -3,8 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:paytm_allinonesdk/paytm_allinonesdk.dart';
 import 'package:rbazaar/App/Home/AccountdetailModel.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/address/StateModel.dart';
@@ -17,8 +19,10 @@ import 'package:rbazaar/utils/showtoast.dart';
 import '../model/AddTocartLocal.dart';
 import 'BookingSloatModel.dart';
 import 'DeliverychargeModel.dart';
+import 'GenerateTokenModel.dart';
 import 'OrderPlaceModel.dart';
 import 'OrderServicescaller.dart';
+import 'UpdateOrderPaymentStatusModel.dart';
 
 class OrderController extends GetxController {
   final OrderServicescaller serviceCaller = OrderServicescaller();
@@ -78,6 +82,43 @@ class OrderController extends GetxController {
 
   changepromoCode(value) => this._promoCode.value = value;
 
+  final _orderID = "".obs;
+
+  get orderID => this._orderID.value;
+
+  changeorderID(value) => this._orderID.value = value;
+  final _txnToken = "".obs;
+
+  get txnToken => this._txnToken.value;
+
+  changetxnToken(value) => this._txnToken.value = value;
+
+
+
+  final _TXNID = "".obs;
+
+  get TXNID => this._TXNID.value;
+
+  changeTXNID(value) => this._TXNID.value = value;
+
+  final _TXNDATE = "".obs;
+
+  get TXNDATE => this._TXNDATE.value;
+
+  changeTXNDATE(value) => this._TXNDATE.value = value;
+
+  final _RESPMSG = "".obs;
+
+  get RESPMSG => this._RESPMSG.value;
+
+  changeRESPMSG(value) => this._RESPMSG.value = value;
+
+
+  bool isStaging = true;
+  bool restrictAppInvoke = true;
+
+
+
   BookingSlots() async {
     try {
       SharedPref pref = SharedPref();
@@ -96,6 +137,8 @@ class OrderController extends GetxController {
     }
   }
 
+  String result;
+
 /*  http://localhost:8080/Ecommerce/checkoutAPI?addressid=&slotdate=&slottime=&username=&shipping=&qty[]
   // =&saleRate[]=&patternid[]=&productsno[]=&productName[]=&weight[]=&unit[]=&mainproductsno[]=
   // &grossweight[]=&netweight[]=&Categorysno[]=&purchaserate[]=&mrp[]=&paymentmode=&subtotal
@@ -105,13 +148,149 @@ class OrderController extends GetxController {
     bool doneFlage = false;
     try {
       if (await CommonUtills.ConnectionStatus() == true) {
-
-         if (slotdate == null || slotdate == '') {
+        /*if (slotdate == null || slotdate == '') {
           changeError("Please select delivery date slot");
           return doneFlage;
         }
-        print( slottimeSno);
-        if (slottimeSno==0) {
+        print(slottimeSno);
+        if (slottimeSno == 0) {
+          changeError("Please select delivery time slot");
+          return doneFlage;
+        }*/
+        changeProcessing(false);
+        List<String> qty = [];
+        List<String> saleRate = [];
+        List<String> patternid = [];
+        List<String> productsno = [];
+        List<String> productName = [];
+        List<String> weight = [];
+        List<String> unit = [];
+        List<String> mainproductsno = [];
+        List<String> grossweight = [];
+        List<String> netweight = [];
+        List<String> Categorysno = [];
+        List<String> purchaserate = [];
+        List<String> mrp = [];
+        List<String> discountpercent = [];
+        List<String> discountamount = [];
+
+        DBHelper dbHelper = DBHelper();
+        List<Map> ListMap = await dbHelper.getAllProducts();
+        List<AddTocartLocal> productList = ListMap.isNotEmpty
+            ? ListMap.map((c) => AddTocartLocal.fromMap(c)).toList()
+            : null;
+        if (productList != null) {
+          for (var i = 0; i < productList?.length; i++) {
+            qty.add(productList[i].quantityLocal.toString());
+            saleRate.add(productList[i].saleRate.toString());
+            patternid.add(productList[i].patternid.toString());
+            productsno.add(productList[i].dsno.toString());
+            productName.add(productList[i].productName.toString());
+            weight.add(productList[i].weight.toString());
+            unit.add(productList[i].unit.toString());
+            mainproductsno.add(productList[i].mainproductsno.toString());
+            grossweight.add(productList[i].grossweight.toString());
+            netweight.add(productList[i].netweight.toString());
+            Categorysno.add(productList[i].category.toString());
+            purchaserate.add(productList[i].purchaserate.toString());
+            discountpercent.add(productList[i].discountpercent.toString());
+            String discountAmt = getDiscount(
+                productList[i].saleRate,
+                productList[i].discountpercent,
+                productList[i].quantityLocal,
+                productList[i]);
+            if (discountAmt != null) {
+              discountamount.add(discountAmt);
+            } else {
+              discountamount.add('0');
+            }
+            mrp.add(productList[i].mrp.toString());
+          }
+        }
+        String subtotal = getSubtotal(productList);
+        // String discount = getTotalDiscount(productList);
+        String grandtotal = getFinalAmount(productList);
+
+        String url =
+            "${Constants.AppBaseUrl}checkoutAPI?addressid=${addressSno}&slotdate=${slotdate}&slottime=${slottimeSno}&username=${username}&shipping=${shippingAmt}&qty[]=${qty.join(', ')}&saleRate[]=${saleRate.join(', ')}&patternid[]=${patternid.join(', ')}&productsno[]=${productsno.join(', ')}&productName[]=${productName.join(', ')}&weight[]=${weight.join(', ')}&unit[]=${unit.join(', ')}&mainproductsno[]=${mainproductsno.join(', ')}&grossweight[]=${grossweight.join(', ')}&netweight[]=${netweight.join(', ')}&Categorysno[]=${Categorysno.join(', ')}&purchaserate[]=${purchaserate.join(', ')}&mrp[]=${mrp.join(', ')}&paymentmode=${paymentMode}&subtotal=${subtotal}&grandtotal=${grandtotal}&promocode=${promoCode}&discountpercent[]=${discountpercent.join(', ')}&discountamount[]=${discountamount.join(', ')}";
+        print(url);
+        OrderPlaceModel placedata = await serviceCaller.placeOrders(url);
+        if (placedata != null && placedata.status == "true") {
+          changeorderID(placedata.orderno);
+          changetotalAmount(grandtotal);
+          if (await generateToken(username)) {
+            doneFlage = true;
+            changeProcessing(true);
+          } else {
+            doneFlage = false;
+            changeProcessing(true);
+          }
+        }
+        else {
+          changeError(placedata.message);
+          print("placedata.message");
+          changeProcessing(true);
+        }
+      } else {
+        showOfflineToast1();
+      }
+    } catch (e) {
+      changeProcessing(true);
+      changeError(e.toString());
+    }
+    return doneFlage;
+  }
+  //genrate tnx token
+  Future<bool> generateToken(String username) async {
+    bool doneFlage = false;
+    try {
+      GenerateTokenModel tokendata =
+      await serviceCaller.generateTokenCall(orderID, totalAmount, username);
+      if (tokendata != null && tokendata.body.resultInfo.resultStatus == 'S') {
+        changetxnToken(tokendata.body.txnToken);
+        doneFlage = true;
+      } else {
+        changeError("txn Token not found");
+        print("body.resultInfo.resultStatus");
+      }
+    }catch (e) {
+      changeError(e.toString());
+    }
+    return doneFlage;
+  }
+
+  Future<bool> UpdateOrderPaymentStatus()async{
+    bool doneFlage = false;
+    try {
+      UpdateOrderPaymentStatusModel updateOrder = await serviceCaller
+          .UpdateOrderPaymentStatus(orderID, TXNID, TXNDATE, RESPMSG);
+      if (updateOrder != null && updateOrder.status == "true") {
+        changeError("Your order has been placed successfully");
+        doneFlage = true;
+        print("Your order has been placed successfully");
+        changeProcessing(true);
+      } else {
+        changeError("Something went wrong with Update Order Payment Status!");
+        print("Something went wrong with Update Order Payment Status!");
+        changeProcessing(true);
+      }
+    }catch (e) {
+      changeError(e.toString());
+    }
+    return doneFlage;
+  }
+
+  Future<bool> placeOrderCOD(int addressSno, String slotdate, int slottimeSno,
+      String username, String shippingAmt, String paymentMode) async {
+    bool doneFlage = false;
+    try {
+      if (await CommonUtills.ConnectionStatus() == true) {
+        if (slotdate == null || slotdate == '') {
+          changeError("Please select delivery date slot");
+          return doneFlage;
+        }
+        print(slottimeSno);
+        if (slottimeSno == 0) {
           changeError("Please select delivery time slot");
           return doneFlage;
         }
@@ -168,21 +347,21 @@ class OrderController extends GetxController {
         String subtotal = getSubtotal(productList);
         // String discount = getTotalDiscount(productList);
         String grandtotal = getFinalAmount(productList);
+
         String url =
             "${Constants.AppBaseUrl}checkoutAPI?addressid=${addressSno}&slotdate=${slotdate}&slottime=${slottimeSno}&username=${username}&shipping=${shippingAmt}&qty[]=${qty.join(', ')}&saleRate[]=${saleRate.join(', ')}&patternid[]=${patternid.join(', ')}&productsno[]=${productsno.join(', ')}&productName[]=${productName.join(', ')}&weight[]=${weight.join(', ')}&unit[]=${unit.join(', ')}&mainproductsno[]=${mainproductsno.join(', ')}&grossweight[]=${grossweight.join(', ')}&netweight[]=${netweight.join(', ')}&Categorysno[]=${Categorysno.join(', ')}&purchaserate[]=${purchaserate.join(', ')}&mrp[]=${mrp.join(', ')}&paymentmode=${paymentMode}&subtotal=${subtotal}&grandtotal=${grandtotal}&promocode=${promoCode}&discountpercent[]=${discountpercent.join(', ')}&discountamount[]=${discountamount.join(', ')}";
         print(url);
         OrderPlaceModel placedata = await serviceCaller.placeOrders(url);
-        if(placedata!=null && placedata.status=="Saved successfully"){
+        if (placedata != null && placedata.status == "true") {
           doneFlage = true;
-          changeError("Your order has been successfully");
-        }else{
+          changeError("Your order has been placed successfully");
+        } else {
           changeError(placedata.message);
         }
         changeProcessing(true);
       } else {
         showOfflineToast1();
       }
-
     } catch (e) {
       changeProcessing(true);
       changeError(e.toString());

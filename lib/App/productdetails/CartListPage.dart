@@ -9,6 +9,7 @@ import 'package:rbazaar/App/database/DBHelper.dart';
 import 'package:rbazaar/App/database/DBHelperNew.dart';
 import 'package:rbazaar/App/database/SQLiteDbProvider.dart';
 import 'package:rbazaar/App/model/User.dart';
+import 'package:rbazaar/App/orderplace/OrderPlacePage.dart';
 import 'package:rbazaar/App/productlist/ProductListPage.dart';
 import 'package:rbazaar/App/subCategory/SubCategoryModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
@@ -286,6 +287,7 @@ class CartListPageState extends State<CartListPage> {
                 var userInfo = await pref.read("userId");
                 if (userInfo != null && userInfo != '') {
                   Get.to(AddressPage(phone: userInfo));
+                  // Get.to(OrderPlacePage(addressSno:1));
                 } else {
                   Get.to(LoginPage());
                 }

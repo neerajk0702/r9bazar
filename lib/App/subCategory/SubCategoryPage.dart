@@ -37,7 +37,7 @@ class SubCategoryPageState extends State<SubCategoryPage> {
         body: Container(
             height: Get.height,
             width: Get.width,
-            color: Colors.white,
+            color: MyColors.lightblue1,
             child: Stack(
               children: [
                 SingleChildScrollView(

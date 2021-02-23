@@ -30,15 +30,22 @@ class ProfileServicecaller {
     Dio dio = await getInterceptors();
     try {
       print("${Constants.AppBaseUrl}UpdateProfileAPI?username=${userName}&fname=${fname}&lname=${lname}&emailid=${emailid}&gender=${"M"}&mobile=${phone}");
-     /*if(image==null){
-       image=File("/rbazar.jpg");
-     }*/
-      String fileName = image?.path?.split("/")?.last??"";
-      FormData formData = new FormData.fromMap({
-        "file": await MultipartFile.fromFile(image.path??"", filename: fileName)
-      });
+      FormData formData=null;
+     if(image!=null){
+       print("ggfgf"+image.toString());
+       String fileName = image?.path?.split("/")?.last??"";
+        formData = new FormData.fromMap({
+         "file": await MultipartFile.fromFile(image.path??"", filename: fileName)
+       });
+     }else{
+       formData = new FormData.fromMap({
+         "file": await MultipartFile.fromFile("image", filename: "rbazar.jpg"),
+         "title": "from app2"
+       });
+     }
+
       Response response = await dio.post(
-          "${Constants.AppBaseUrl}UpdateProfileAPI?username=${userName}&fname=${fname}&lname=${lname}&emailid=${emailid}&gender=${"M"}&mobile=${""}", data: formData);
+          "${Constants.AppBaseUrl}UpdateProfileAPI?username=${userName}&fname=${fname}&lname=${lname}&emailid=${emailid}&gender=${"M"}&mobile=${userName}", data: formData);
 
       return AccountdetailModel.fromJson(response.data);
     } on DioError catch (error) {

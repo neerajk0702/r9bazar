@@ -59,7 +59,7 @@ class LoginPageState extends State<LoginPage> {
                           child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset(
-                                'assets/images/launcher.jpg',
+                                'assets/images/logonew.png',
                               )),
                         ),
                         Container(

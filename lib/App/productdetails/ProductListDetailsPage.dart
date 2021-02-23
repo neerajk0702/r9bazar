@@ -56,51 +56,46 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return SafeArea(child: Scaffold(
+    return  Scaffold(
         key: _scaffoldkey,
         body: Container(
-            height: Get.height,
+            height:CommonUtills.displayHeight(context),
             width: Get.width,
             color: Colors.white,
             child: Stack(
               children: [
-              Container(height: double.infinity,
-              width: double.infinity,
-              color: Colors.transparent,
-                child:  SingleChildScrollView(
-                    // scrollDirection: Axis.vertical,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        StreamBuilder<ProductDetailsModel>(
-                          stream: bloc.ServiceSubject.stream,
-                          builder: (context,
-                              AsyncSnapshot<ProductDetailsModel> snapshot) {
-                            if (snapshot.hasData) {
-                              if (snapshot.error == null &&
-                                  snapshot.data.status == false) {
-                                return _buildErrorWidget(snapshot.data.message);
-                              } else if (snapshot.error == null &&
-                                  snapshot.data.isNull) {
-                                return _buildErrorWidget("No Data Found");
-                              } else if (snapshot.error != null ||
-                                  snapshot.data.isNull) {
-                                return _buildErrorWidget(snapshot.error);
-                              }
-                              return _buildProductWidget(snapshot.data);
-                            } else if (snapshot.hasError) {
+                Container(
+                  width: double.infinity,
+                  color: Colors.transparent,
+                  child:  SingleChildScrollView(
+                    // scr
+                    // ollDirection: Axis.vertical,
+                      child:Container(child: StreamBuilder<ProductDetailsModel>(
+                        stream: bloc.ServiceSubject.stream,
+                        builder: (context,
+                            AsyncSnapshot<ProductDetailsModel> snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.error == null &&
+                                snapshot.data.status == false) {
+                              return _buildErrorWidget(snapshot.data.message);
+                            } else if (snapshot.error == null &&
+                                snapshot.data.isNull) {
+                              return _buildErrorWidget("No Data Found");
+                            } else if (snapshot.error != null ||
+                                snapshot.data.isNull) {
                               return _buildErrorWidget(snapshot.error);
-                            } else {
-                              return _buildLoadingWidget();
                             }
-                          },
-                        )
-                      ],
-                    )),)
+                            return _buildProductWidget(snapshot.data);
+                          } else if (snapshot.hasError) {
+                            return _buildErrorWidget(snapshot.error);
+                          } else {
+                            return _buildLoadingWidget();
+                          }
+                        },
+                      ),)),)
 
               ],
-            ))),);
+            )));
   }
 
   Widget loadingIndicator(ProductListDetailsBloc bloc) => StreamBuilder<bool>(
@@ -221,6 +216,9 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        SizedBox(
+          height: 20,
+        ),
         _topBar(data),
         ClipRRect(
           borderRadius: BorderRadius.only(
@@ -460,7 +458,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
             child: Container(
               height: 42.0,
               width: 130,
-              margin: EdgeInsets.only(top: 16, bottom: 2, left: 5),
+              margin: EdgeInsets.only(top: 16, bottom: 2, left: 5,right: 5),
               padding: EdgeInsets.only(top: 5, bottom: 5, left: 2, right: 2),
               alignment: Alignment.center,
               decoration: new BoxDecoration(

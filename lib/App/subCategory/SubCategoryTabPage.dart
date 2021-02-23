@@ -55,7 +55,7 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
         body: Container(
             height: Get.height,
             width: Get.width,
-            color: Colors.white,
+            color: MyColors.lightblue1,
             child: StreamBuilder<SubCategoryModel>(
               stream: bloc.homeServiceSubject.stream,
               builder: (context,
@@ -194,8 +194,8 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
               data?.subCategories[index]?.subCategory,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
+                  color: Colors.red,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold),)
             ), ),
         pageBuilder: (context, index) =>
@@ -234,6 +234,7 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
 
   Widget _productList(ProductModel data) {
     return Container(
+        color: MyColors.lightblue1,
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 0, left: 0, right: 0),
       child: SingleChildScrollView(scrollDirection: Axis.vertical,
@@ -250,7 +251,7 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontSize: 16,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -271,7 +272,7 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
                     return new InkWell(
                       child: Container(
                         width: Get.width / 2,
-                        color: Colors.white,
+                        color: MyColors.lightblue1,
                         padding: EdgeInsets.only(
                             top: 3, bottom: 3, left: 2, right: 2),
                         child: Card(
@@ -324,6 +325,7 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
                         ),
                       ),
                       onTap: () {
+                        print('hello');
                         Get.to(ProductListDetailsPage(productName:data?.products[index]?.productName,catId:widget.catId,
                             imagePath:Constants.imageUrl +  data?.products[index]?.folderName +  data?.products[index]?.fileName ?? "",
                             productTitle:data?.products[index]?.productName,productsno:data?.products[index]?.dsno));

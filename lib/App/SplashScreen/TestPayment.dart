@@ -35,7 +35,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String mid = "txSGuH70208097700957", orderId = "213", amount = "1", txnToken = "+OU7i5egIhFOjaMZCQm7Y\/yoM6dbmPmdaWmxT9G5OPQNaJI2BnLXWyGhvJkSG86AUzSvsoh\/3Y5NDawiFyGQWPsp\/dehNO4qw8S8U5rVV8M=";
+  // txnToken=e3fca5dd216d4c55a20dc28d3d693d801613919727813&orderId=20210221_0024&mid=txSGuH70208097700957
+  String mid = "txSGuH70208097700957", orderId = "20210221_0024", amount = "1", txnToken = "e3fca5dd216d4c55a20dc28d3d693d801613919727813";
   String result = "";
   bool isStaging = false;
   bool isApiCallInprogress = false;

@@ -58,7 +58,7 @@ class SignupPageState extends State<SignupPage> {
                           child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset(
-                                'assets/images/launcher.jpg',
+                                'assets/images/logonew.png',
                               )),
                         ),
                         Container(

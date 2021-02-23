@@ -1,23 +1,18 @@
-class OrderPlaceModel {
+class UpdateOrderPaymentStatusModel {
   String status;
   String message;
-  String orderno;
 
-  OrderPlaceModel({this.status, this.message,this.orderno});
+  UpdateOrderPaymentStatusModel({this.status, this.message});
 
-  OrderPlaceModel.fromJson(Map<String, dynamic> json) {
+  UpdateOrderPaymentStatusModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    orderno = json['orderno'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
-    data['orderno'] = this.orderno;
     return data;
   }
-
 }
-

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:paytm_allinonesdk/paytm_allinonesdk.dart';
 import 'package:rbazaar/App/Auth/LoginPage.dart';
 import 'package:rbazaar/App/Home/AccountdetailModel.dart';
 import 'package:rbazaar/App/Home/HomePage.dart';
@@ -34,6 +36,9 @@ class OrderPlacePageState extends State<OrderPlacePage> {
   Slotdate slotdate;
   Slottime slottime;
   paymentMode _site = paymentMode.COD;
+  bool isStaging = true;
+  bool restrictAppInvoke = true;
+  String result = "";
 
   @override
   void initState() {
@@ -42,6 +47,7 @@ class OrderPlacePageState extends State<OrderPlacePage> {
     controller.getOrderDetails();
     controller.BookingSlots();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -291,15 +297,13 @@ class OrderPlacePageState extends State<OrderPlacePage> {
                       borderSide: BorderSide(color: Colors.black),
                     ),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        new BorderRadius.circular(10.0),
+                        borderRadius: new BorderRadius.circular(10.0),
                         borderSide: BorderSide(
                           color: MyColors.primaryColor,
                         )),
                     isDense: true,
                     // Added this
-                    contentPadding:
-                    EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   ),
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.black),
@@ -307,52 +311,57 @@ class OrderPlacePageState extends State<OrderPlacePage> {
             Divider(
               color: Colors.white,
             ),
-            Row(children: [
-              Expanded(child:  ListTile(
-                title: Text(
-                  "COD",
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Expanded(
+                  child: ListTile(
+                    title: Text(
+                      "COD",
+                      maxLines: 1,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    leading: Radio(
+                      value: paymentMode.COD,
+                      groupValue: _site,
+                      onChanged: (paymentMode value) {
+                        setState(() {
+                          _site = value;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-                leading: Radio(
-                  value: paymentMode.COD,
-                  groupValue: _site,
-                  onChanged: (paymentMode value) {
-                    setState(() {
-                      _site = value;
-                    });
-                  },
-                ),
-              ),),
-              Expanded(child:  ListTile(
-                title: Text(
-                  "Pay Now",
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
-                ),
-                leading: Radio(
-                  value: paymentMode.ONLINE,
-                  groupValue: _site,
-                  onChanged: (paymentMode value) {
-                    setState(() {
-                      _site = value;
-                    });
-                  },
-                ),
-              ),)
-
-            ],),
+                Expanded(
+                  child: ListTile(
+                    title: Text(
+                      "Pay Now",
+                      maxLines: 1,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    leading: Radio(
+                      value: paymentMode.ONLINE,
+                      groupValue: _site,
+                      onChanged: (paymentMode value) {
+                        setState(() {
+                          _site = value;
+                        });
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
             submitButton()
-
           ],
         ));
   }
+
   Widget submitButton() {
     double height45 = MediaQuery.of(context).size.height * 0.05656804733;
     double width230 = MediaQuery.of(context).size.width * 0.54;
@@ -360,23 +369,48 @@ class OrderPlacePageState extends State<OrderPlacePage> {
       onPressed: () async {
         SharedPref pref = SharedPref();
         var userInfo = await pref.read("userId");
-        if(userInfo!=null && userInfo!='') {
-          if (await controller.placeOrder(widget.addressSno, slotdate?.slotdate??"", slottime?.sno??0, userInfo, controller.deliverycharge,_site.toString())) {
-            DBHelper dbHelper = DBHelper();
-            dbHelper.deleteAllProduct();
-            Get.offAll(HomePage());
-            CommonUtills.flutterToast(controller.errorValue);
-          }else{
-            CommonUtills.flutterToast(controller.errorValue);
+        if (userInfo != null && userInfo != '') {
+          String pmode = _site.toString().split('.').last;
+          if (pmode == 'ONLINE') {
+            if (await controller.placeOrder(
+                widget.addressSno,
+                slotdate?.slotdate ?? "",
+                slottime?.sno ?? 0,
+                userInfo,
+                controller.deliverycharge,
+                pmode)) {
+              await finalPaymentDone();
+
+            } else {
+              CommonUtills.flutterToast(controller.errorValue);
+              print("ONLINE not!");
+            }
+          } else {
+            if (await controller.placeOrderCOD(
+                widget.addressSno,
+                slotdate?.slotdate ?? "",
+                slottime?.sno ?? 0,
+                userInfo,
+                controller.deliverycharge,
+                pmode)) {
+              DBHelper dbHelper = DBHelper();
+              dbHelper.deleteAllProduct();
+              Get.offAll(HomePage());
+              CommonUtills.flutterToast(controller.errorValue);
+              print("COD!");
+            } else {
+              print("COD not!");
+              CommonUtills.flutterToast(controller.errorValue);
+            }
           }
-        }else{
+        } else {
           Get.to(LoginPage());
         }
       },
       textColor: Colors.white,
       padding: const EdgeInsets.all(0.0),
       child: Container(
-        height:height45 ,
+        height: height45,
         margin: const EdgeInsets.only(bottom: 0, top: 40, left: 15, right: 15),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -397,16 +431,17 @@ class OrderPlacePageState extends State<OrderPlacePage> {
         ),
         child: Center(
             child: Text(
-              "Place Your Order",
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                // color: Colors.white,
-              ),
-            )),
+          "Place Your Order",
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            // color: Colors.white,
+          ),
+        )),
       ),
     );
   }
+
   getDropdownDate() {
     return Padding(
       padding: const EdgeInsets.all(5.0),
@@ -425,20 +460,21 @@ class OrderPlacePageState extends State<OrderPlacePage> {
                   ),
                   isDense: true,
                   isExpanded: true,
-                  items: controller?.BookingSloat?.slotdate?.map((Slotdate item) {
-                        return new DropdownMenuItem(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: new Text(
-                              item.slot1,
-                              style: TextStyle(fontSize: 16.0),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          value: item,
-                        );
-                      })?.toList() ??
-                      [],
+                  items:
+                      controller?.BookingSloat?.slotdate?.map((Slotdate item) {
+                            return new DropdownMenuItem(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: new Text(
+                                  item.slot1,
+                                  style: TextStyle(fontSize: 16.0),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              value: item,
+                            );
+                          })?.toList() ??
+                          [],
                   hint: Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text(
@@ -535,4 +571,109 @@ class OrderPlacePageState extends State<OrderPlacePage> {
             ),
     );
   }
+
+  //call paytm payment
+ finalPaymentDone() async {
+    try {
+      var response = AllInOneSdk.startTransaction(
+          Constants.MID,
+          controller.orderID,
+          controller.totalAmount,
+          controller.txnToken,
+          null,
+          isStaging,
+          restrictAppInvoke);
+      response.then((value) async {
+        print(value);
+        String RESPMSG = value["RESPMSG"];
+        String TXNAMOUNT = value["TXNAMOUNT"];
+        String TXNID = value["TXNID"];
+        String STATUS = value["STATUS"];
+        String BANKTXNID = value["BANKTXNID"];
+        String TXNDATE = value["TXNDATE"];
+        result = value.toString();
+        print("RESPMSG= " +
+            RESPMSG +
+            "  TXNID= " +
+            TXNID +
+            "  TXNDATE= " +
+            TXNDATE);
+        controller.changeRESPMSG(RESPMSG);
+        controller.changeTXNDATE(TXNDATE);
+        controller.changeTXNID(TXNID);
+
+        if (await controller.UpdateOrderPaymentStatus()){
+          DBHelper dbHelper = DBHelper();
+          dbHelper.deleteAllProduct();
+          Get.offAll(HomePage());
+          CommonUtills.flutterToast(controller.errorValue);
+          print("done!");
+        }else{
+          CommonUtills.flutterToast(controller.errorValue);
+        }
+      }).catchError((onError) {
+        if (onError is PlatformException) {
+          result = onError.message + " \n  " + onError.details.toString();
+          print(result);
+        } else {
+          result = onError.toString();
+          print(result);
+        }
+      });
+    } catch (err) {
+      result = err.message;
+      print(result);
+    }
+  }
+
+/*
+  PayStartTransaction(String userInfo) {
+    try {
+      var response = AllInOneSdk.startTransaction(
+          Constants.MID,
+          controller.orderID,
+          controller.totalAmount,
+          controller.txnToken,
+          null,
+          isStaging,
+          restrictAppInvoke);
+      response.then((value) async {
+        print(value);
+        if (await controller.placeOrder(
+            widget.addressSno,
+            slotdate?.slotdate ?? "",
+            slottime?.sno ?? 0,
+            userInfo,
+            controller.deliverycharge,
+            _site.toString())) {
+          DBHelper dbHelper = DBHelper();
+          //dbHelper.deleteAllProduct();
+          //Get.offAll(HomePage());
+          CommonUtills.flutterToast(controller.errorValue);
+        } else {
+          CommonUtills.flutterToast(controller.errorValue);
+        }
+        setState(() async {
+          // http://localhost:8080/Ecommerce/UpdateOrderPaymentStatusAPI?ORDER_ID=fdg&TXNID=&TXNDATE=&RESPMSG=
+          result = value.toString();
+          print(result);
+        });
+      }).catchError((onError) {
+        if (onError is PlatformException) {
+          setState(() {
+            result = onError.message + " \n  " + onError.details.toString();
+            print(result);
+          });
+        } else {
+          setState(() {
+            result = onError.toString();
+            print(result);
+          });
+        }
+      });
+    } catch (err) {
+      result = err.message;
+      print(result);
+    }
+  }*/
 }
