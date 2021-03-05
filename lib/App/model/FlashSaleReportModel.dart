@@ -1,6 +1,7 @@
 class FlashSaleReportModel {
   List<FlashSaleList> flashSaleList;
   String expirydateCount;
+  String endtime;
 
   FlashSaleReportModel({this.flashSaleList, this.expirydateCount});
 

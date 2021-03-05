@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:rbazaar/App/Auth/LoginModel.dart';
 import 'package:rbazaar/App/Auth/SignUpModel.dart';
 import 'package:rbazaar/App/address/StateModel.dart';
+import 'package:rbazaar/App/orderplace/OrderPlaceModel.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
 import 'package:rbazaar/utils/interceptor/interceptor.dart';
 
@@ -35,6 +36,22 @@ class AuthServicecaller {
     } on DioError catch (error) {
       String message = error.message;
       print("signUPSC service caller error " + message);
+      throw (message);
+    }
+  }
+
+  forgotPassword(String phone) async {
+    Dio dio = await getInterceptors();
+    try {
+      Response response = await dio
+          .post("${Constants.AppBaseUrl}ForgetPassAPI?mobile=${phone}");
+      print(
+          'login url= ' + "${Constants.AppBaseUrl}ForgetPassAPI?mobile=${phone}");
+      print(response.data);
+      return OrderPlaceModel.fromJson(response.data);
+    } on DioError catch (error) {
+      String message = error.message;
+      print("forgotPassword service caller error " + message);
       throw (message);
     }
   }

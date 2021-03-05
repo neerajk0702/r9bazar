@@ -4,7 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:rbazaar/App/Auth/LoginPage.dart';
 import 'package:rbazaar/App/Home/HomePage.dart';
+import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/Test/testHome.dart';
 import 'package:rbazaar/App/orderplace/OrderPlacePage.dart';
 import 'package:rbazaar/App/profile/ProfilePage.dart';
@@ -21,7 +23,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2)).then((value) => Get.off(HomePage()));
+    Future.delayed(Duration(seconds: 2)).then((value) => openPage());
     // Get.to(OrderPlacePage(addressSno:4));
     // Get.to(ProfilePage());
     super.initState();
@@ -38,10 +40,22 @@ class _SplashScreenState extends State<SplashScreen> {
             child: FittedBox(
                 fit: BoxFit.fill,
                 child: Image.asset(
-                  'assets/images/logonew.png',
+                  'assets/images/logo.png',
                 )),
           ),)),
     );
   }
+  openPage() async {
+    SharedPref pref = SharedPref();
+    var userInfo = await pref.read("userId");
+    if (userInfo != null && userInfo != '') {
+      Get.offAll(HomePage());
+    }else{
+      Get.to(LoginPage());
+    }
+
+  }
 }
+
+
 

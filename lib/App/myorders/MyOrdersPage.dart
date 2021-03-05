@@ -39,7 +39,7 @@ class MyOrdersPageState extends State<MyOrdersPage> {
         body: Container(
       height: Get.height,
       width: Get.width,
-          color: MyColors.lightblue1,
+      color: MyColors.lightblue1,
       child: Stack(
         children: [
           Column(
@@ -56,7 +56,7 @@ class MyOrdersPageState extends State<MyOrdersPage> {
                     child: Obx(() => Container(
                         height: Get.height,
                         margin: const EdgeInsets.only(
-                            bottom: 10, top: 10, left: 10, right: 10),
+                            bottom: 10, top: 0, left: 10, right: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -267,8 +267,7 @@ class MyOrdersPageState extends State<MyOrdersPage> {
                         margin: const EdgeInsets.only(
                             bottom: 3, top: 0, left: 5, right: 10),
                         child: Text(
-                          getOrderStatus(
-                              data?.orderStatus),
+                          getOrderStatus(data?.orderStatus),
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             color: Colors.black,
@@ -285,6 +284,7 @@ class MyOrdersPageState extends State<MyOrdersPage> {
       ),
     );
   }
+
   getOrderStatus(String orderStatus) {
     if (orderStatus == 'P') {
       return 'Pending';

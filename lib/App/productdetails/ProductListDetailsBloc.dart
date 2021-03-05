@@ -39,8 +39,7 @@ class ProductListDetailsBloc {
           subcategoriesModel.totalItem=productList.length;
           for (var i = 0; i < subcategoriesModel?.subproducts.length; i++) {
             for (var j = 0; j < productList.length; j++) {
-              if (productList[j].dsno ==
-                  subcategoriesModel?.subproducts[i].dsno) {
+              if (productList[j].dsno ==subcategoriesModel?.subproducts[i].dsno) {
                 subcategoriesModel?.subproducts[i].dbnetweight =productList[j].totalNetweight;
                 subcategoriesModel?.subproducts[i].dbQuantityLocal =productList[j].quantityLocal;
               }

@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rbazaar/App/Auth/LoginPage.dart';
+import 'package:rbazaar/App/Home/HomePage.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/address/CityModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
@@ -251,6 +252,7 @@ class ProfilePageState extends State<ProfilePage> {
                           var profileImg = await pref.read("profileImg");
                           controller.changeprofileImg(profileImg);
                           print(profileImg);
+                          Get.offAll(HomePage());
                         });
                         // Get.back();
                       } else {
@@ -371,12 +373,13 @@ class ProfilePageState extends State<ProfilePage> {
       SharedPref pref = SharedPref();
       var userInfo = await pref.read("userId");
       if (userInfo != null && userInfo != '') {
-        if (await controller.updateProfile(pimage)) {
+        if (await controller.updateProfileImage(pimage)) {
           CommonUtills.flutterToast("Profile Image been updated successfully");
           setState(() async {
             SharedPref pref = SharedPref();
             var profileImg = await pref.read("profileImg");
             print(profileImg);
+            Get.offAll(HomePage());
           });
           // Get.back();
         } else {

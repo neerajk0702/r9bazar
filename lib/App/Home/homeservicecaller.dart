@@ -13,6 +13,7 @@ import 'package:rbazaar/utils/interceptor/interceptor.dart';
 
 import 'AccountdetailModel.dart';
 import 'Homemodel.dart';
+import 'LocationModel.dart';
 import 'SliderModel.dart';
 
 
@@ -87,6 +88,22 @@ class HomeServiceCaller {
     } on DioError catch(error){
       String message = error.message;
       print("myaccountdetailData service caller error "+message);
+      throw (message);
+    }
+  }
+
+  getLocationData() async{
+    Dio dio = await getInterceptors();
+    try {
+      Response response = await dio.post(
+          "${Constants.AppBaseUrl}PINCODEAvailabilityAPI?pincode=&type=L"
+      );
+      print('url= '+"${Constants.AppBaseUrl}PINCODEAvailabilityAPI?pincode=&type=L");
+      print(response.data);
+      return LocationModel.fromJson(response.data);
+    } on DioError catch(error){
+      String message = error.message;
+      print("getLocationData service caller error "+message);
       throw (message);
     }
   }

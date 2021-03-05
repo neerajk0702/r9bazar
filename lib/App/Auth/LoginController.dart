@@ -8,6 +8,7 @@ import 'package:rbazaar/App/Auth/AuthServicecaller.dart';
 import 'package:rbazaar/App/Auth/LoginModel.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/address/StateModel.dart';
+import 'package:rbazaar/App/orderplace/OrderPlaceModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 import 'package:rbazaar/utils/showtoast.dart';
 
@@ -93,6 +94,37 @@ class LoginController extends GetxController {
     return doneFlage;
   }
 
+  Future<bool> forgotPassword() async {
+    bool doneFlage=false;
 
+    if (usernameValue == null || usernameValue == '') {
+      changeError("Please enter your phone number");
+      return doneFlage;
+    }
+    if (usernameValue.length<10) {
+      changeError("Please enter valid phone number");
+      return doneFlage;
+    }
+    try {
+      changeProcessing(true);
+      OrderPlaceModel data = await serviceCaller.forgotPassword(usernameValue);
+      if (data != null && data.status=='true') {
+        changeProcessing(false);
+        doneFlage=true;
+        changeError(data.message);
+      }else{
+        changeError("Somthing wrong with this phone number!");
+        doneFlage=false;
+        changeProcessing(false);
+      }
+    } catch (e) {
+      changeProcessing(false);
+      changeError(e.toString());
+      doneFlage=false;
+      changeProcessing(false);
+    }
+
+    return doneFlage;
+  }
 
 }

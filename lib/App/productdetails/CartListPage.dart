@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:rbazaar/App/Auth/LoginPage.dart';
+import 'package:rbazaar/App/Home/HomePage.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/address/AddressPage.dart';
 import 'package:rbazaar/App/database/DBHelper.dart';
@@ -371,7 +372,7 @@ class CartListPageState extends State<CartListPage> {
             children: [
           Container(
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.only(bottom: 5, top: 10, left: 5, right: 5),
+            margin: const EdgeInsets.only(bottom: 5, top: 0, left: 5, right: 5),
             child: Text(
               data?.productName,
               textAlign: TextAlign.left,
@@ -587,7 +588,7 @@ class CartListPageState extends State<CartListPage> {
         // _getStatus(myfavoritedata.id,index,list);
         // Get.back();
         dbHelper.deleteAllProduct();
-        Get.back();
+        Get.offAll(HomePage());
       },
     );
     Widget CancelButton = RaisedButton(

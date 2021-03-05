@@ -81,6 +81,8 @@ dependencies:
   permission_handler: ^4.0.0
   paytm: ^2.0.0
   paytm_allinonesdk: ^1.0.0
+  flutter_countdown_timer: ^3.0.1
+  webview_flutter: ^0.3.24
 
 
 
@@ -93,7 +95,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logonew.png"
+  image_path: "assets/images/logo.png"
 
 
 

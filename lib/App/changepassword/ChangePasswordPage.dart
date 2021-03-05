@@ -61,7 +61,7 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
                               child: FittedBox(
                                   fit: BoxFit.fill,
                                   child: Image.asset(
-                                    'assets/images/logonew.png',
+                                    'assets/images/logo.png',
                                   )),
                             ),
 

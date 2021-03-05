@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:rbazaar/App/Auth/SignupPage.dart';
+import 'package:rbazaar/App/Home/HomePage.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 
 import 'package:rbazaar/utils/mycolors.dart';
@@ -47,7 +48,6 @@ class LoginPageState extends State<LoginPage> {
                   height: 20,
                 ),
                 _topBar(),
-
                 Container(
                     margin: EdgeInsets.only(top: 0, left: 10, right: 10),
                     height: Get.height,
@@ -55,11 +55,14 @@ class LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(alignment: Alignment.center, width: 200, height: 200,
+                        Container(
+                          alignment: Alignment.center,
+                          width: 200,
+                          height: 200,
                           child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset(
-                                'assets/images/logonew.png',
+                                'assets/images/logo.png',
                               )),
                         ),
                         Container(
@@ -127,10 +130,20 @@ class LoginPageState extends State<LoginPage> {
                               cursorColor: Colors.black,
                               style: TextStyle(color: Colors.black),
                             )),
-                        InkWell(onTap: (){
-                          Get.to(SignupPage());
-                        },
-                            child:   Container( alignment: Alignment.centerRight,
+                        InkWell(
+                            onTap: () async {
+                              if (await CommonUtills.ConnectionStatus() == true) {
+                              if (await controller.forgotPassword()) {
+                              CommonUtills.flutterToast(controller.errorValue);
+                              } else {
+                              CommonUtills.flutterToast(controller.errorValue);
+                              }
+                              } else {
+                              showOfflineToast1();
+                              }
+                            },
+                            child: Container(
+                                alignment: Alignment.centerRight,
                                 margin: const EdgeInsets.only(
                                     bottom: 0, top: 30, left: 0, right: 10),
                                 child: Text(
@@ -142,22 +155,24 @@ class LoginPageState extends State<LoginPage> {
                                       fontWeight: FontWeight.bold),
                                 ))),
                         submitButton(),
-                        InkWell(onTap: (){
-                          Get.to(SignupPage());
-                        },
-                          child:   Center(child: Container(
-                              margin: const EdgeInsets.only(
-                                  bottom: 0, top: 40, left: 0, right: 0),
-                              child: Text(
-                                "Don't have an account? Sign UP",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    // decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.bold),
-                              )),),),
-
-
+                        InkWell(
+                          onTap: () {
+                            Get.to(SignupPage());
+                          },
+                          child: Center(
+                            child: Container(
+                                margin: const EdgeInsets.only(
+                                    bottom: 0, top: 40, left: 0, right: 0),
+                                child: Text(
+                                  "Don't have an account? Sign UP",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      // decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                          ),
+                        ),
                       ],
                     ))
               ],
@@ -165,15 +180,15 @@ class LoginPageState extends State<LoginPage> {
           ),
           Positioned(
             child: Obx(
-                  () => Center(
+              () => Center(
                 child: controller.isProcessing
                     ? Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(top: 10, left: 0, right: 0),
-                    child: CircularProgressIndicator())
-                    :SizedBox(
-                  height: 10,
-                ) ,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 10, left: 0, right: 0),
+                        child: CircularProgressIndicator())
+                    : SizedBox(
+                        height: 10,
+                      ),
               ),
             ),
           )
@@ -226,7 +241,7 @@ class LoginPageState extends State<LoginPage> {
         if (await CommonUtills.ConnectionStatus() == true) {
           if (await controller.loginSC()) {
             CommonUtills.flutterToast(controller.errorValue);
-            Get.back();
+            Get.offAll(HomePage());
           } else {
             CommonUtills.flutterToast(controller.errorValue);
           }
@@ -237,7 +252,7 @@ class LoginPageState extends State<LoginPage> {
       textColor: Colors.white,
       padding: const EdgeInsets.all(0.0),
       child: Container(
-        height:height45 ,
+        height: height45,
         margin: const EdgeInsets.only(bottom: 0, top: 40, left: 15, right: 15),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(

@@ -59,10 +59,10 @@ class ChangePasswordController extends GetxController {
       changeError("Please enter your new password!");
       return doneFlage;
     }
-    if (oldpasswordValue!=newPassword) {
+  /*  if (oldpasswordValue!=newPassword) {
       changeError("Your old password and new password dose not match!");
       return doneFlage;
-    }
+    }*/
     try {
       changeProcessing(true);
       LoginModel data = await serviceCaller.changePasswordSC(userName, oldpasswordValue,newPassword);

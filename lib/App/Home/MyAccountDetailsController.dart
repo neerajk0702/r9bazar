@@ -47,11 +47,15 @@ class MyAccountDetailsController extends GetxController {
   changeError(value) => this._error.value = value;
 
 
+  final _productname = "".obs;
+
+  get productname => this._productname.value;
+  changeproductname(value) => this._productname.value = value;
 
   Future<bool> accountDetailsSC() async {
     bool doneFlage=false;
     try {
-      changeProcessing(true);
+      // changeProcessing(true);
       SharedPref pref = SharedPref();
       var userInfo = await pref.read("userId");
       if(userInfo!=null && userInfo!='') {
@@ -66,17 +70,15 @@ class MyAccountDetailsController extends GetxController {
             pref.save("userId", data.userDetail.userId);
             print('myaccountdetail done');
             changeAccountdetailData(data);
-            changeProcessing(false);
+            // changeProcessing(false);
             doneFlage=true;
-          }else{
-            changeError("You have not been login successfully!");
           }
         }else{
           changeError("Network not available!");
         }
       }
     } catch (e) {
-      changeProcessing(false);
+      // changeProcessing(false);
       changeError(e.toString());
     }
 

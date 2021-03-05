@@ -29,6 +29,7 @@ class ProductListDetailsPage extends StatefulWidget {
   var productName;
   var productTitle;
   int mainproductsno;
+  String aliasName;
 
   ProductListDetailsPage(
       {this.productName,
@@ -36,7 +37,8 @@ class ProductListDetailsPage extends StatefulWidget {
       this.imagePath,
       this.productTitle,
       this.productsno,
-      this.mainproductsno});
+      this.mainproductsno,
+        this.aliasName});
 }
 
 class ProductListDetailsPageState extends State<ProductListDetailsPage> {
@@ -163,7 +165,10 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
                         "Any Item did not found in your cart");
                   } else {
                     // Get.to(CartListPage());
-                    Get.off(CartListPage());
+                    Get.to(CartListPage()).then((value){
+                      setState(() {
+                        bloc.getProductListData(widget.productsno, widget.catId);});
+                    });
                   }
                 },
                   child:   Container(
@@ -247,6 +252,17 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
           ),
         ),
         Container(
+          alignment: Alignment.centerLeft,
+          margin:
+          const EdgeInsets.only(bottom: 0, top: 10.0, left: 10, right: 10),
+          child: Text(
+            widget.aliasName,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.normal),
+          ),
+        ),
+        Container(
           margin: const EdgeInsets.only(bottom: 10, top: 0, left: 5, right: 5),
           child: ListView.builder(
               itemCount: data?.subproducts?.length,
@@ -278,7 +294,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
               margin:
                   const EdgeInsets.only(bottom: 5, top: 5.0, left: 5, right: 5),
               child: Text(
-                data?.productName,
+                data?.aliasName,
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     color: Colors.black,

@@ -246,7 +246,7 @@ class ProductListPageState extends State<ProductListPage> {
                   onTap: () {
                     Get.to(ProductListDetailsPage(productName:data?.products[index]?.productName,catId:widget.catId,
                         imagePath:Constants.imageUrl +  data?.products[index]?.folderName +  data?.products[index]?.fileName ?? "",
-                        productTitle:data?.products[index]?.productName,productsno:data?.products[index]?.dsno,mainproductsno :data?.products[index]?.productid));
+                        productTitle:data?.products[index]?.productName,productsno:data?.products[index]?.dsno,mainproductsno :data?.products[index]?.productid,aliasName:data?.products[index]?.aliasName));
                   },
                 );
               }))

@@ -45,5 +45,18 @@
         	<string>Used to demonstrate image picker plugin</string>
      <key>NSCameraUsageDescription</key>
              	<string>Used to demonstrate image picker plugin</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    	<string>This app needs access your location for match delivery location</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    	<string>This app needs access your location for match delivery location</string>
+    <dict>
+    	<key>NSAllowsArbitraryLoads</key>
+    	<true/>
+    	<key>NSAllowsArbitraryLoadsInWebContent</key>
+    	<true/>
+    </dict>
+    <key>NSAppTransportSecurity</key>
+    <key>io.flutter.embedded_views_preview</key>
+      <true/>
 </dict>
 </plist>

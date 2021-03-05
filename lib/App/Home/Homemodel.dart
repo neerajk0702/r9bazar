@@ -7,6 +7,7 @@ import 'AccountdetailModel.dart';
 import 'CourseModel.dart';
 import 'CoursesForYouModel.dart';
 import 'InprogressModel.dart';
+import 'LocationModel.dart';
 import 'SliderModel.dart';
 
 class Homemodel {
@@ -34,7 +35,10 @@ class Homemodel {
 
   UserDetail userDetail;
   List<OrdersList> ordersList;
+  List<Pincodes> locationList;
 
+  String saleEndDatetime;
+  int totalItem = 0;
   factory Homemodel.fromJson(Map<String, dynamic> json) => Homemodel(
     totalChapters: json["total_chapters"],
     completedChapters: json["completed_chapters"],

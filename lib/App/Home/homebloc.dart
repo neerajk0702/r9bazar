@@ -2,6 +2,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
+import 'package:rbazaar/App/database/DBHelper.dart';
+import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:rbazaar/App/model/CategoriesModel.dart';
 import 'package:rbazaar/App/model/FlashSaleReportModel.dart';
 import 'package:rbazaar/App/model/HotdealModel.dart';
@@ -10,6 +12,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'AccountdetailModel.dart';
 import 'Homemodel.dart';
+import 'LocationModel.dart';
 import 'SliderModel.dart';
 import 'homeservicecaller.dart';
 
@@ -36,13 +39,31 @@ class HomeBloc{
        /* if (isLoading != null && isLoading) {
           return;
         }*/
+        var dbHelper = DBHelper();
+        // var total=getTotalItemNo();
+        List<Map> ListMap = await dbHelper.getAllProducts();
+        List<AddTocartLocal> productList = ListMap.isNotEmpty
+            ? ListMap.map((c) => AddTocartLocal.fromMap(c)).toList()
+            : null;
+
         CategoriesModel categoriesModel = await servicecaller.getCategoryesList();
         Homemodel response = Homemodel();
+        if (productList != null && productList.length>0) {
+          response.totalItem = productList.length;
+        }
+        LocationModel locationModel = await servicecaller.getLocationData();
+        response.locationList=locationModel?.pincodes;
+
         response.categories=categoriesModel?.categories;
         HotdealModel hotdeal = await servicecaller.getHotDeal();
         response.deals=hotdeal?.deals;
         FlashSaleReportModel flashsale = await servicecaller.getflashsale();
         response.flashSaleList=flashsale?.flashSaleList;
+        if(flashsale?.flashSaleList!=null && flashsale?.flashSaleList.length>0){
+          // response?.endtime=flashsale?.flashSaleList[0].endtime;
+          // response?.expirydateCount=flashsale?.flashSaleList[0].expDateforCounter;
+          response?.saleEndDatetime=flashsale?.flashSaleList[0].expDateforCounter+" "+flashsale?.flashSaleList[0].endtime;
+        }
         SliderModel sliderData = await servicecaller.getsliderDetails();
         response.sliderList=sliderData?.carousel;
 

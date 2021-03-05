@@ -159,4 +159,48 @@ class ProfileController extends GetxController {
 
     return doneFlage;
   }
+
+
+  Future<bool> updateProfileImage(File image) async {
+    bool doneFlage=false;
+
+    if (image == null || image == '') {
+      changeError("Please select profile image");
+      return doneFlage;
+    }
+    try {
+      SharedPref pref = SharedPref();
+      var userInfo = await pref.read("userId");
+      if (await CommonUtills.ConnectionStatus() == true) {
+        changeProcessing(false);
+        AccountdetailModel data = await serviceCaller.updateProfileImage(userInfo,image);
+        if(data.userDetail!=null){
+          // pref.save("name", data.userDetail.name);
+          // pref.save("password", data.userDetail.password);
+          // pref.save("phone", data.userDetail.registeredNo);
+          // pref.save("email", data.userDetail.emailId);
+          // pref.save("lname", data.userDetail.lname);
+          String profileImg='';
+          if(data.userDetail?.filename!=null && data.userDetail?.filename!=''){
+            profileImg=Constants.imageUrl+data.userDetail?.folderName+data.userDetail?.filename;
+            changeprofileImg(profileImg);
+          }
+          pref.save("profileImg", profileImg);
+          // pref.save("userId", data.userDetail.userId);
+          doneFlage=true;
+          changeError("Profile image has been updated successfully");
+        }else{
+          changeError("Profile image has not been update!");
+        }
+        changeProcessing(true);
+      }else{
+        showOfflineToast1();
+      }
+    } catch (e) {
+      changeProcessing(true);
+      changeError(e.toString());
+    }
+
+    return doneFlage;
+  }
 }
