@@ -5,6 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/model/DeviceInfoModel.dart';
 import 'package:rbazaar/App/model/NotificationModel.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
@@ -27,6 +28,9 @@ class PNotification {
       }
 
       var token = await _messaging.getToken();
+      print("************FirebaseMessaging token: $token");
+      SharedPref pref = SharedPref();
+        pref.save("DEVICETOKEN", token);
 //      var user = await db.getLogUser();
 //      String userAccessToken =user != null && user.accessToken != null ? user.accessToken : '';
       // sending fmc tocken value to server

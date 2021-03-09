@@ -9,8 +9,8 @@ class Constants {
   static const USERTOKEN="USERTOKEN";
   static const PlayStoreLinkUrl = "";
   static const AppStoreLinkUrl = "";
-  static const AppBaseUrl = "http://r9bazaar.com/";
-  static const imageUrl = "http://r9bazaar.com/";
+  static const AppBaseUrl = "https://r9bazaar.com/";
+  static const imageUrl = "https://r9bazaar.com/";
 
 //// LOGIN SCREEN
   static const entermobile="please enter mobile";

@@ -49,6 +49,7 @@ class OrderServicescaller {
     Dio dio = await getInterceptors();
     try {
       Response response = await dio.post(urlwithPayload);
+      print(response.data);
       return OrderPlaceModel.fromJson(response.data);
     } on DioError catch (error) {
       String message = error.message;

@@ -11,6 +11,7 @@ import 'package:rbazaar/App/database/DBHelperNew.dart';
 import 'package:rbazaar/App/database/SQLiteDbProvider.dart';
 import 'package:rbazaar/App/model/User.dart';
 import 'package:rbazaar/App/orderplace/OrderPlacePage.dart';
+import 'package:rbazaar/App/orderplace/ThankYouPage.dart';
 import 'package:rbazaar/App/productlist/ProductListPage.dart';
 import 'package:rbazaar/App/subCategory/SubCategoryModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
@@ -35,7 +36,7 @@ class AddressPageState extends State<AddressPage> {
   // AddressListBloc bloc = AddressListBloc();
   final AddressController controller = Get.put(AddressController());
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
-
+String pincodeSelect='';
   @override
   void initState() {
     // TODO: implement initState
@@ -81,7 +82,9 @@ class AddressPageState extends State<AddressPage> {
                             var userInfo = await pref.read("userId");
                             if (userInfo != null && userInfo != '') {
                               if(widget.addressSno>0){
-                                Get.to(OrderPlacePage(addressSno:widget.addressSno));
+                                if(await controller.checkPincodeSC(pincodeSelect)){
+                                  Get.to(OrderPlacePage(addressSno:widget.addressSno));
+                                }
                               }else{
                                 CommonUtills.flutterToast("Please select anyone deliver address!");
                               }
@@ -191,19 +194,34 @@ class AddressPageState extends State<AddressPage> {
                         }),
                   ),
                 )
-              : Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(
-                      bottom: 0, top: 5, left: 5, right: 5),
-                  child: Text(
-                    "No data found",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
-                  ),
+              : Center(child:  Column( crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.only(
+                    bottom: 10, top: 5, left: 5, right: 5),
+                child: Text(
+                  "Address not found please add your delivery address",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
+              ),
+              Container( margin: const EdgeInsets.only(
+                  bottom: 10, top: 20, left: 5, right: 5),
+                alignment: Alignment.center,
+                child: IconButton(iconSize: 50,
+                  icon:
+                  Icon(FontAwesomeIcons.plusCircle, color: MyColors.primaryColor),
+                  onPressed: () {
+                    Get.to(AddEditAddressPage());
+                  },
+                ),
+              )
+            ],)),
 
 
         ],
@@ -217,6 +235,7 @@ class AddressPageState extends State<AddressPage> {
           setState(() {
             widget.selectPosition = index;
             widget.addressSno=data.sno;
+            pincodeSelect=data.pinCode;
           });
         },
         child: Column(

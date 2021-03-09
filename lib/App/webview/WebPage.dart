@@ -29,6 +29,7 @@ class WebPageState extends State<WebPage> {
     // TODO: implement initState
     super.initState();
   }
+  bool isProcessing=false;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -39,6 +40,16 @@ class WebPageState extends State<WebPage> {
           color: Colors.white,
           child: Stack(
             children: [
+              Center(
+                child: isProcessing
+                    ? SizedBox(
+                  height: 10,
+                )
+                    : Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 10, left: 0, right: 0),
+                    child: CircularProgressIndicator()),
+              ),
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
@@ -50,7 +61,7 @@ class WebPageState extends State<WebPage> {
                     ),
                     _topBar(),
                     Container(
-                        margin: EdgeInsets.only(top: 0, left: 10, right: 10),
+                        margin: EdgeInsets.only(top: 0, left: 0, right: 0,bottom: 50),
                         height: Get.height,
                         child:
                       /*  WebView(
@@ -71,6 +82,10 @@ class WebPageState extends State<WebPage> {
                         },
                         onPageFinished: (String url) {
                           print('Page finished loading: $url');
+                          setState(() {
+                            isProcessing=true;
+                          });
+
                         },
                         gestureNavigationEnabled: true,
                       ),

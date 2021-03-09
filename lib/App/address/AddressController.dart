@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:rbazaar/App/Home/LocationModel.dart';
 import 'package:rbazaar/App/address/StateModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 import 'package:rbazaar/utils/showtoast.dart';
@@ -285,6 +286,33 @@ class AddressController extends GetxController {
     }catch(error){
       print("Address list Bloc error"+error.toString());
       changeProcessing(true);
+    }
+  }
+
+
+  Future<bool> checkPincodeSC(String pincode) async {
+    if (await CommonUtills.ConnectionStatus() == true) {
+      try {
+        changeProcessing(false);
+        LocationModel data = await serviceCaller.checkPincode(pincode);
+        if (data != null && data?.pincodes?.length>0) {
+          print('true'+data?.pincodes?.length.toString());
+          changeProcessing(true);
+          return true;
+        }else{
+          print('false');
+          CommonUtills.flutterToast("Delivery not available in this area!");
+          changeProcessing(true);
+          return false;
+        }
+      } catch (e) {
+        changeProcessing(true);
+        CommonUtills.flutterToast(e.toString());
+        return false;
+      }
+    } else {
+      showOfflineToast1();
+      return false;
     }
   }
 }

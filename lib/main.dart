@@ -15,6 +15,7 @@ import 'package:rbazaar/Global/global.dart';
 import 'package:rbazaar/utils/showtoast.dart';
 
 import 'App/appEntry/appEntry.dart';
+import 'App/firebase/FirebaseNotification.dart';
 import 'Global/GlobalConstants.dart';
 import 'Global/Themes/darkTheme.dart';
 import 'Global/Themes/lightTheme.dart';
@@ -24,7 +25,10 @@ import 'Routes/routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
+  await Firebase.initializeApp();
+  // Force disable Crashlytics collection while doing every day development.
+  // Temporarily toggle this to true if you want to test crash reporting in your app.
+  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   // Set AppFlavour
   Config.appFlavor = Flavor.QA;
 
@@ -41,7 +45,7 @@ Future<void> main() async {
     );
   }, (error, stackTrace) {
     //CrashAnalytics added for, any flutter crash
-    Crashlytics.instance.recordError(error, stackTrace);
+    FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
 }
 
@@ -74,9 +78,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _notification();
     super.initState();
   }
+  _notification() async {
 
+    FirebaseNotification _pNotification = FirebaseNotification(context);
+    await _pNotification?.getToken();
+    await _pNotification?.getNotifications();
+  }
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {

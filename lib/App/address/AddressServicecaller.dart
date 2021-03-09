@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:rbazaar/App/Home/LocationModel.dart';
 import 'package:rbazaar/App/address/StateModel.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
 import 'package:rbazaar/utils/interceptor/interceptor.dart';
@@ -68,6 +69,22 @@ class AddressServicecaller {
     } on DioError catch (error) {
       String message = error.message;
       print("saveAddressSC service caller error " + message);
+      throw (message);
+    }
+  }
+
+
+  checkPincode(String pincode) async{
+    Dio dio = await getInterceptors();
+    try {
+      Response response = await dio.post(
+          "${Constants.AppBaseUrl}PINCODEAvailabilityAPI?pincode=${pincode}&type=P"
+      );
+      print('url= '+"${Constants.AppBaseUrl}PINCODEAvailabilityAPI?pincode=${pincode}&type=P");
+      return LocationModel.fromJson(response.data);
+    } on DioError catch(error){
+      String message = error.message;
+      print("checkPincode service caller error "+message);
       throw (message);
     }
   }

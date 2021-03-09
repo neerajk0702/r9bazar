@@ -353,6 +353,7 @@ class OrderController extends GetxController {
         print(url);
         OrderPlaceModel placedata = await serviceCaller.placeOrders(url);
         if (placedata != null && placedata.status == "true") {
+          changeorderID(placedata?.orderno);
           doneFlage = true;
           changeError("Your order has been placed successfully");
         } else {

@@ -58,8 +58,7 @@ class SearchProductPageState extends State<SearchProductPage> {
                   ),
                   _topBar(),
                   Expanded(
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
+                    child: Container(
                         child: Obx(() => Container(
                             height: Get.height,
                             margin: const EdgeInsets.only(
@@ -72,7 +71,7 @@ class SearchProductPageState extends State<SearchProductPage> {
                                   child: _buildProductWidget(),
                                 ),
                                 SizedBox(
-                                  height: 90,
+                                  height: 20,
                                 ),
                               ],
                             )))),
@@ -193,7 +192,7 @@ class SearchProductPageState extends State<SearchProductPage> {
           itemCount: controller?.productData?.products?.length==null?0:controller?.productData?.products.length,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
-          physics: NeverScrollableScrollPhysics(),
+          // physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             return _productItemWidget( controller?.productData?.products[index], index,controller?.productData);
           }),

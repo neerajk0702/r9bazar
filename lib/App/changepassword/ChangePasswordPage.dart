@@ -57,7 +57,9 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(alignment: Alignment.center, width: 200, height: 200,
+                            Container( margin: const EdgeInsets.only(
+                                bottom: 40, top: 40, left: 0, right: 0),
+                              alignment: Alignment.center, width: 200, height: 200,
                               child: FittedBox(
                                   fit: BoxFit.fill,
                                   child: Image.asset(

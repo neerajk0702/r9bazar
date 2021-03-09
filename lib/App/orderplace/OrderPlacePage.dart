@@ -395,7 +395,8 @@ class OrderPlacePageState extends State<OrderPlacePage> {
                 pmode)) {
               DBHelper dbHelper = DBHelper();
               dbHelper.deleteAllProduct();
-              Get.offAll(HomePage());
+
+              Get.to(ThankYouPage(orderId: controller.orderID));
               CommonUtills.flutterToast(controller.errorValue);
               print("COD!");
             } else {
@@ -589,7 +590,7 @@ class OrderPlacePageState extends State<OrderPlacePage> {
         String TXNAMOUNT = value["TXNAMOUNT"];
         String TXNID = value["TXNID"];
         String STATUS = value["STATUS"];
-        String BANKTXNID = value["BANKTXNID"];
+        String ORDERID = value["ORDERID"];
         String TXNDATE = value["TXNDATE"];
         result = value.toString();
         print("RESPMSG= " +
@@ -605,7 +606,8 @@ class OrderPlacePageState extends State<OrderPlacePage> {
         if (await controller.UpdateOrderPaymentStatus()){
           DBHelper dbHelper = DBHelper();
           dbHelper.deleteAllProduct();
-          Get.offAll(HomePage());
+          // Get.offAll(HomePage());
+          Get.to(ThankYouPage(orderId: ORDERID));
           CommonUtills.flutterToast(controller.errorValue);
           print("done!");
         }else{

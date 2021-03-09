@@ -18,6 +18,7 @@ import 'package:rbazaar/App/changepassword/ChangePasswordPage.dart';
 import 'package:rbazaar/App/database/DBHelper.dart';
 import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:rbazaar/App/myorders/MyOrdersPage.dart';
+import 'package:rbazaar/App/orderplace/ThankYouPage.dart';
 import 'package:rbazaar/App/productdetails/CartListPage.dart';
 import 'package:rbazaar/App/productdetails/ProductListDetailsPage.dart';
 import 'package:rbazaar/App/productdetails/SingleProductDetailsPage.dart';
@@ -313,9 +314,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                     InkWell(
                         onTap: () {
+                          // showCourseCompleteDialog();
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'http://r9bazaar.com/faq',title:'FAQs')));
+                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/faq.html',title:'FAQs')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -345,7 +347,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'http://r9bazaar.com/termscondition',title:'Terms and Conditions')));
+                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/termscondition.html',title:'Terms and Conditions')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -375,7 +377,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'http://r9bazaar.com/privacypolicy',title:'Privacy Policy')));
+                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/privacypolicy.html',title:'Privacy Policy')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -405,7 +407,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'http://r9bazaar.com/refundpolicy',title:'Refund Return Cancellation Policy')));
+                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/refundpolicy.html',title:'Refund Return Cancellation Policy')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -431,23 +433,23 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         )),
 
-                    Divider(),
+                   /* Divider(),
                     InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'http://r9bazaar.com/aboutus',title:'About us')));
+                              builder: (BuildContext context) => WebPage(url:'https://r9bazaar.com/aboutus',title:'About us')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
                               top: 5, bottom: 5, left: 15, right: 10),
                           child: Row(
                             children: [
-                             /* Icon(
+                             *//* Icon(
                                 Icons.question_answer_rounded,
                                 color: MyColors.lightblue,
                                 size: 28,
-                              ),*/
+                              ),*//*
                               SizedBox(
                                 width: 5,
                               ),
@@ -460,7 +462,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ],
                           ),
-                        )),
+                        )),*/
 
                     Container(
                       padding: EdgeInsets.only(top: 10, left: 0, right: 10),
@@ -730,7 +732,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       data.trendingcourserdata.length>0? _trendingCourse(data):SizedBox(),
       data.courseforyoudata.length>0? _courseForYou(data):SizedBox(),
       data.inProgressListData.length>0? _courseInProgress(data):SizedBox()*/
-            Container(child:  Row( crossAxisAlignment: CrossAxisAlignment.start,
+            Container(height: 50,
+              child:  Row( crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,children: [
                 Expanded(child:   Container(
                     margin: const EdgeInsets.only(
@@ -768,7 +771,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 Container( margin: const EdgeInsets.only(
                     bottom: 0, top: 5, left: 0, right: 5),
                     alignment: Alignment.centerLeft,
-                    child: IconButton(iconSize: 40,
+                    child: IconButton(iconSize: 35,
                         icon: Icon(Icons.search, color: MyColors.primaryColor),
                         onPressed: () {
                           if(controller.productname==null || controller.productname==''){
@@ -1119,9 +1122,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   itemCount: data?.deals.length > 6 ? 6 : data?.deals.length,
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio:
-                      ((CommonUtills.displayWidth(context) / 3) /
-                          (CommonUtills.displayHeight(context) / 3.5))),
+                      childAspectRatio:0.7),
                   itemBuilder: (BuildContext context, int index) {
                     return new InkWell(
                         onTap: () async {
@@ -1473,9 +1474,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       : data?.flashSaleList.length,
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio:
-                      ((CommonUtills.displayWidth(context) / 3) /
-                          (CommonUtills.displayHeight(context) / 4))),
+                      childAspectRatio:0.7),
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                         onTap: () async {
@@ -1512,8 +1511,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  height:
-                                  CommonUtills.displayHeight(context) / 3.5,
+                                  height:160,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8.0),
@@ -1614,9 +1612,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   itemCount: data?.categories.length,
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio:
-                      ((CommonUtills.displayWidth(context) / 2) /
-                          (CommonUtills.displayHeight(context) / 3))),
+                      childAspectRatio:0.9),
                   itemBuilder: (BuildContext context, int index) {
                     return new InkWell(
                       child: Container(
@@ -1635,7 +1631,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                height: CommonUtills.displayHeight(context) / 4,
+                                height: 160
+                                ,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8.0),
@@ -1860,9 +1857,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         pref.remove("email");
         pref.remove("lname");
         pref.remove("userId");
+        pref.remove("currentLocation");
+        pref.remove("postalCode");
+        pref.remove("profileImg");
         CommonUtills.flutterToast("You have been logout successfully");
         Navigator.of(context).pop();
-        Get.offAll(HomePage());
+        Get.offAll(LoginPage());
       },
     );
     Widget CancelButton = RaisedButton(
@@ -1957,7 +1957,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   //----show this dialog after complete your level
-  void showCourseCompleteDialog(context, Homemodel homemodel) {
+  void showCourseCompleteDialogdd(context, Homemodel homemodel) {
     Dialog errorDialog = Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       //this right here
@@ -2149,9 +2149,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     setState(() {
       SharedPref pref = SharedPref();
-      pref.save("currentLocation", first.locality);
+      pref.save("currentLocation", first.addressLine);
       pref.save("postalCode", first.postalCode);
-      cuttentLocation =  first.locality;
+      cuttentLocation =  first.addressLine;
     });
 
     return first;
@@ -2184,4 +2184,102 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ],
                       ),
                     );*/
+
+
+//----show this dialog after complete your level
+  void showCourseCompleteDialog() {
+    Dialog errorDialog = Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      //this right here
+      child: Container(
+        width: CommonUtills.displayWidth(context),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(margin: EdgeInsets.only(top: 30, bottom: 0, left: 0, right: 0),alignment:Alignment.topCenter,
+              child:  FittedBox(
+                fit: BoxFit.cover,
+                child: SvgPicture.asset(
+                  'assets/images/undrawhappybirthday.svg',
+                ),
+              ),
+            ),
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(top: 20, bottom: 0, left: 0, right: 0),
+              alignment: Alignment.topCenter,
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: SvgPicture.asset(
+                  'assets/images/congratulations.svg',
+                ),
+              ),
+            ),
+            Container(
+                margin:
+                EdgeInsets.only(top: 10, bottom: 0, left: 15, right: 15),
+                alignment: Alignment.center,
+                child: Text(
+                  'Congratulations your order has been placed successfully',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal),
+                  textAlign: TextAlign.center,
+                )),
+            Container(
+                margin:
+                EdgeInsets.only(top: 10, bottom: 0, left: 15, right: 15),
+                alignment: Alignment.center,
+                child: Text(
+                  'ORDERID : ',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal),
+                  textAlign: TextAlign.center,
+                )),
+            Container(
+              width: 150,
+              margin: EdgeInsets.only(bottom: 0, left: 0, right: 0, top: 20),
+              child: RaisedButton(
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal),
+                ).tr(),
+                shape: CommonWidgets.buttonshape(),
+                onPressed: () async {
+                  Navigator.pop(context);
+
+                },
+              ),
+            ),
+            /*Container(
+                margin: EdgeInsets.only(bottom: 0, left: 0, right: 0, top: 20),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Notnow',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal),
+                      textAlign: TextAlign.center,
+                    ).tr()))*/
+          ],
+        ),
+      ),
+    );
+    showDialog(
+        context: context, builder: (BuildContext context) => errorDialog);
+  }
 }

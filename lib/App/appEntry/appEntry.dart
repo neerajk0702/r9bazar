@@ -4,6 +4,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'package:rbazaar/App/firebase/FirebaseNotification.dart';
 import 'package:rbazaar/App/firebase/pNotification.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
 import 'package:rbazaar/Routes/app_routes.dart';
@@ -50,7 +51,11 @@ class _AppEntryState extends State<AppEntry> {
   }
 
   _checkUser() async {
-    PNotification _pNotification = PNotification(context);
+    // PNotification _pNotification = PNotification(context);
+    // await _pNotification?.getNotifications();
+
+    FirebaseNotification _pNotification = FirebaseNotification(context);
+    await _pNotification?.getToken();
     await _pNotification?.getNotifications();
 
 //    var user = await db.getLogUser();

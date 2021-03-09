@@ -55,7 +55,10 @@ class LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+
                         Container(
+                          margin: const EdgeInsets.only(
+                              bottom: 0, top: 40, left: 0, right: 0),
                           alignment: Alignment.center,
                           width: 200,
                           height: 200,
@@ -65,9 +68,10 @@ class LoginPageState extends State<LoginPage> {
                                 'assets/images/logo.png',
                               )),
                         ),
+
                         Container(
                             margin: const EdgeInsets.only(
-                                bottom: 0, top: 10, left: 10, right: 10),
+                                bottom: 0, top: 50, left: 10, right: 10),
                             child: TextField(
                               onChanged: (text) {
                                 // When user enter text in textfield getXHelper checktext method will get called

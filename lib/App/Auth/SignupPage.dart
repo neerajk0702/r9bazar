@@ -54,7 +54,9 @@ class SignupPageState extends State<SignupPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(alignment: Alignment.center, width: 200, height: 200,
+                        Container(margin: const EdgeInsets.only(
+                            bottom: 0, top: 30, left: 0, right: 0),
+                          alignment: Alignment.center, width: 200, height: 200,
                           child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset(
@@ -63,7 +65,7 @@ class SignupPageState extends State<SignupPage> {
                         ),
                         Container(
                             margin: const EdgeInsets.only(
-                                bottom: 0, top: 10, left: 10, right: 10),
+                                bottom: 0, top: 30, left: 10, right: 10),
                             child: TextField(
                               onChanged: (text) {
                                 // When user enter text in textfield getXHelper checktext method will get called
