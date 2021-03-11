@@ -12,6 +12,8 @@ import 'package:rbazaar/App/orderplace/OrderPlaceModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 import 'package:rbazaar/utils/showtoast.dart';
 
+import 'RoleModel.dart';
+
 
 class LoginController extends GetxController {
   LoginController();
@@ -58,29 +60,43 @@ class LoginController extends GetxController {
       return doneFlage;
     }
       try {
+
         changeProcessing(true);
-        LoginModel data = await serviceCaller.login(usernameValue, passwordValue);
-        if (data != null && data.status=='success') {
-          SharedPref pref = SharedPref();
-          if(data.userDetail!=null){
-            pref.save("name", data.userDetail.name);
-            pref.save("password", data.userDetail.password);
-            pref.save("phone", data.userDetail.registeredNo);
-            pref.save("email", data.userDetail.emailId);
-            pref.save("lname", data.userDetail.lname);
-            pref.save("userId", data.userDetail.userId);
-            changeLoginData(data);
-            changeProcessing(false);
-            print('loginSC done');
-            doneFlage=true;
-            changeError("You have been login successfully");
-          }else{
-            changeError("You have not been login successfully!");
-            doneFlage=false;
-            changeProcessing(false);
+        SharedPref pref = SharedPref();
+        var deviceId = await pref.read("DEVICETOKEN");
+        RoleModel roledata = await serviceCaller.RoleSC(usernameValue);
+        if(roledata!=null && roledata?.role!=null){
+          if(roledata?.role?.role=='1' && roledata?.role?.role1=="") { //delivery boy login
+
+          }else { //user login
+            LoginModel data = await serviceCaller.login(usernameValue, passwordValue,deviceId);
+            if (data != null && data.status=='success') {
+              SharedPref pref = SharedPref();
+              if(data.userDetail!=null){
+                pref.save("name", data.userDetail.name);
+                pref.save("password", data.userDetail.password);
+                pref.save("phone", data.userDetail.registeredNo);
+                pref.save("email", data.userDetail.emailId);
+                pref.save("lname", data.userDetail.lname);
+                pref.save("userId", data.userDetail.userId);
+                changeLoginData(data);
+                changeProcessing(false);
+                print('loginSC done');
+                doneFlage=true;
+                changeError("You have been login successfully");
+              }else{
+                changeError("User name or password incorrect !");
+                doneFlage=false;
+                changeProcessing(false);
+              }
+            }else{
+              changeError("You have not been login successfully!");
+              doneFlage=false;
+              changeProcessing(false);
+            }
           }
         }else{
-          changeError("You have not been login successfully!");
+          changeError("Role API issue contact to support team!");
           doneFlage=false;
           changeProcessing(false);
         }

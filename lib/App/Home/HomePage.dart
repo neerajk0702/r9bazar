@@ -238,7 +238,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                             Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => WebPage(url:'http://r9bazaar.com/contactus',title:'Contact us')));
+                        builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/contact.html',title:'Contact us')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(

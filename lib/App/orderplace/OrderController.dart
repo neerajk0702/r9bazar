@@ -148,7 +148,7 @@ class OrderController extends GetxController {
     bool doneFlage = false;
     try {
       if (await CommonUtills.ConnectionStatus() == true) {
-        /*if (slotdate == null || slotdate == '') {
+        if (slotdate == null || slotdate == '') {
           changeError("Please select delivery date slot");
           return doneFlage;
         }
@@ -156,7 +156,7 @@ class OrderController extends GetxController {
         if (slottimeSno == 0) {
           changeError("Please select delivery time slot");
           return doneFlage;
-        }*/
+        }
         changeProcessing(false);
         List<String> qty = [];
         List<String> saleRate = [];

@@ -6,15 +6,17 @@ import 'package:rbazaar/App/orderplace/OrderPlaceModel.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
 import 'package:rbazaar/utils/interceptor/interceptor.dart';
 
+import 'RoleModel.dart';
+
 
 class AuthServicecaller {
-  login(String phone,String password) async {
+  login(String phone,String password,String deviceId) async {
     Dio dio = await getInterceptors();
     try {
       Response response = await dio
-          .post("${Constants.AppBaseUrl}login?username=${phone}&password=${password}");
+          .post("${Constants.AppBaseUrl}login?username=${phone}&password=${password}&deviceid=${deviceId}");
       print(
-          'login url= ' + "${Constants.AppBaseUrl}login?username=${phone}&password=${password}");
+          'login url= ' + "${Constants.AppBaseUrl}login?username=${phone}&password=${password}&deviceid=${deviceId}");
       return LoginModel.fromJson(response.data);
     } on DioError catch (error) {
       String message = error.message;
@@ -22,7 +24,20 @@ class AuthServicecaller {
       throw (message);
     }
   }
-
+  deliveryBoylogin(String phone,String password,String deviceId) async {
+    Dio dio = await getInterceptors();
+    try {
+      Response response = await dio
+          .post("${Constants.AppBaseUrl}dloginvalidationAPI?username=${phone}&password=${password}&deviceid=${deviceId}");
+      print(
+          'deliveryBoylogin url= ' + "${Constants.AppBaseUrl}dloginvalidationAPI?username=${phone}&password=${password}&deviceid=${deviceId}");
+      return LoginModel.fromJson(response.data);
+    } on DioError catch (error) {
+      String message = error.message;
+      print("deliveryBoylogin service caller error " + message);
+      throw (message);
+    }
+  }
 
   signUPSC(String name,String lastname,String email,String phone,String password) async {
     Dio dio = await getInterceptors();
@@ -52,6 +67,22 @@ class AuthServicecaller {
     } on DioError catch (error) {
       String message = error.message;
       print("forgotPassword service caller error " + message);
+      throw (message);
+    }
+  }
+
+
+  RoleSC(String phone) async {
+    Dio dio = await getInterceptors();
+    try {
+      Response response = await dio
+          .post("${Constants.AppBaseUrl}RoleAPI?mobileno=${phone}");
+      print(
+          'RoleSC url= ' + "${Constants.AppBaseUrl}RoleAPI?mobileno=${phone}");
+      return RoleModel.fromJson(response.data);
+    } on DioError catch (error) {
+      String message = error.message;
+      print("RoleSC service caller error " + message);
       throw (message);
     }
   }

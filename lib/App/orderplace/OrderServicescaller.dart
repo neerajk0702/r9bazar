@@ -65,7 +65,7 @@ class OrderServicescaller {
       http://r9bazaar.com/PaytmTaxid?ORDER_ID=21443&CUST_ID=23&TXN_AMOUNT=2
       Response response = await dio.post("${Constants.AppBaseUrl}PaytmTaxid?ORDER_ID=${orderID}&CUST_ID=${customerId}&TXN_AMOUNT=${amount}"
       );
-      print('response= ' + response.toString());
+      print('generateTokenCall response= ' + response.toString());
       return GenerateTokenModel.fromJson(response.data);
     } on DioError catch (error) {
       String message = error.message;

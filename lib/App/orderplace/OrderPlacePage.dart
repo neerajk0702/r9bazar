@@ -36,8 +36,8 @@ class OrderPlacePageState extends State<OrderPlacePage> {
   Slotdate slotdate;
   Slottime slottime;
   paymentMode _site = paymentMode.COD;
-  bool isStaging = true;
-  bool restrictAppInvoke = true;
+  bool isStaging = false;//true for testing
+  bool restrictAppInvoke = false;//true for testing
   String result = "";
 
   @override
