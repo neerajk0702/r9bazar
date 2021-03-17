@@ -16,6 +16,7 @@ import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/Test/PDFViewerFromUrl.dart';
 import 'package:rbazaar/App/changepassword/ChangePasswordPage.dart';
 import 'package:rbazaar/App/database/DBHelper.dart';
+import 'package:rbazaar/App/deliveryboy/DeliveryBoyHomePage.dart';
 import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:rbazaar/App/myorders/MyOrdersPage.dart';
 import 'package:rbazaar/App/orderplace/ThankYouPage.dart';
@@ -97,7 +98,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
-                          Get.offAll(HomePage());
+                          Get.offAll(DeliveryBoyHomePage());
                         },
                         child: Container(
                           margin: EdgeInsets.only(

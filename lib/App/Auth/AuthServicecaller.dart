@@ -6,6 +6,7 @@ import 'package:rbazaar/App/orderplace/OrderPlaceModel.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
 import 'package:rbazaar/utils/interceptor/interceptor.dart';
 
+import 'DeliveryLoginModel.dart';
 import 'RoleModel.dart';
 
 
@@ -31,7 +32,7 @@ class AuthServicecaller {
           .post("${Constants.AppBaseUrl}dloginvalidationAPI?username=${phone}&password=${password}&deviceid=${deviceId}");
       print(
           'deliveryBoylogin url= ' + "${Constants.AppBaseUrl}dloginvalidationAPI?username=${phone}&password=${password}&deviceid=${deviceId}");
-      return LoginModel.fromJson(response.data);
+      return DeliveryLoginModel.fromJson(response.data);
     } on DioError catch (error) {
       String message = error.message;
       print("deliveryBoylogin service caller error " + message);

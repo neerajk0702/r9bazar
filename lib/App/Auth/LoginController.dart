@@ -12,6 +12,7 @@ import 'package:rbazaar/App/orderplace/OrderPlaceModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 import 'package:rbazaar/utils/showtoast.dart';
 
+import 'DeliveryLoginModel.dart';
 import 'RoleModel.dart';
 
 
@@ -67,7 +68,31 @@ class LoginController extends GetxController {
         RoleModel roledata = await serviceCaller.RoleSC(usernameValue);
         if(roledata!=null && roledata?.role!=null){
           if(roledata?.role?.role=='1' && roledata?.role?.role1=="") { //delivery boy login
-
+            DeliveryLoginModel data = await serviceCaller.deliveryBoylogin(usernameValue, passwordValue,deviceId);
+            if (data != null && data.status=='success') {
+              SharedPref pref = SharedPref();
+              if(data.deliveryBoyDetail!=null){
+                pref.save("name", data.deliveryBoyDetail.deliveryBoyName);
+                pref.save("password", data.deliveryBoyDetail.deliveryBoypassword);
+                pref.save("phone", data.deliveryBoyDetail.deliveryBoyMobile);
+                // pref.save("email", data.deliveryBoyDetail.emailId);
+                // pref.save("lname", data.deliveryBoyDetail.lname);
+                pref.save("userId", data.deliveryBoyDetail.deliveryBoyUsername);
+                // changeLoginData(data);
+                changeProcessing(false);
+                print('loginSC done');
+                doneFlage=true;
+                changeError("You have been login successfully");
+              }else{
+                changeError("User name or password incorrect !");
+                doneFlage=false;
+                changeProcessing(false);
+              }
+            }else{
+              changeError("You have not been login successfully!");
+              doneFlage=false;
+              changeProcessing(false);
+            }
           }else { //user login
             LoginModel data = await serviceCaller.login(usernameValue, passwordValue,deviceId);
             if (data != null && data.status=='success') {
