@@ -25,22 +25,20 @@ class DeliveryServicecaller {
     }
   }
 
-/*
-  getAllCitylistSC(int sno) async {
+  deliverOrderSC(String orderID,int productdispatchsno,String reason,String userID) async {
     Dio dio = await getInterceptors();
     try {
       Response response =
-      await dio.post("${Constants.AppBaseUrl}StateWiseCity?stateid=${sno}");
-
-      CityModel responsedata = CityModel.fromJson(response.data);
-      print("getAllCitylistSC  ");
+      await dio.post("${Constants.AppBaseUrl}UpdateDeliveryStatusAPI?status=D&remarks=${reason}&orderso=${orderID}&productdispatchsno=${productdispatchsno}&dusername=${userID}");
+print("${Constants.AppBaseUrl}UpdateDeliveryStatusAPI?status=D&remarks=${reason}&orderso=${orderID}&productdispatchsno=${productdispatchsno}&dusername=${userID}");
+      DeliveryOrderModel responsedata = DeliveryOrderModel.fromJson(response.data);
       return responsedata;
     } on DioError catch (error) {
       String message = error.message;
-      print("getAllCitylistSC service caller error " + message);
+      print("deliverOrderSC service caller error " + message);
       throw (message);
     }
-  }*/
+  }
 
 
 }

@@ -7,6 +7,8 @@ import 'package:rbazaar/App/Home/AccountdetailModel.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
 import 'package:rbazaar/App/address/CityModel.dart';
 import 'package:rbazaar/App/webview/WebPage.dart';
+import 'package:rbazaar/utils/commonutills.dart';
+import 'package:rbazaar/utils/commonwidgets.dart';
 import 'package:rbazaar/utils/mycolors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
@@ -201,6 +203,34 @@ class SettingPageState extends State<SettingPage> {
                                         ],
                                       ),
                                     )),
+                                Divider(),
+                                InkWell(
+                                    onTap: () {
+                                      showSpamAlertDialog(context);
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: 0, bottom: 15, left: 15, right: 10),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.logout,
+                                            color: MyColors.lightblue,
+                                            size: 28,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            'Logout',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ).tr(),
+                                        ],
+                                      ),
+                                    )),
                                 SizedBox(
                                   height: 90,
                                 ),
@@ -249,5 +279,55 @@ class SettingPageState extends State<SettingPage> {
       ),
     );
   }
+  showSpamAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget logoutButton = RaisedButton(
+      child: Text(
+        "Logout",
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ).tr(),
+      shape: CommonWidgets.buttonshape(),
+      onPressed: () {
+        SharedPref pref = SharedPref();
+        pref.remove("name");
+        pref.remove("password");
+        pref.remove("phone");
+        pref.remove("email");
+        pref.remove("lname");
+        pref.remove("userId");
+        pref.remove("currentLocation");
+        pref.remove("postalCode");
+        pref.remove("profileImg");
+        CommonUtills.flutterToast("You have been logout successfully");
+        Navigator.of(context).pop();
+        Get.offAll(LoginPage());
+      },
+    );
+    Widget CancelButton = RaisedButton(
+      child: Text(
+        "Cancel",
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ).tr(),
+      shape: CommonWidgets.buttonshape(),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
 
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Are you sure you want to logout!").tr(),
+      actions: [
+        logoutButton,
+        CancelButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

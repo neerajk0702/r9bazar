@@ -48,8 +48,7 @@ class SignupPageState extends State<SignupPage> {
                 ),
                 _topBar(),
                 Container(
-                    margin: EdgeInsets.only(top: 0, left: 10, right: 10),
-                    height: Get.height,
+                    margin: EdgeInsets.only(top: 0, left: 10, right: 10,bottom: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,

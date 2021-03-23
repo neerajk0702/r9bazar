@@ -9,6 +9,7 @@ import 'package:rbazaar/App/address/CityModel.dart';
 import 'package:rbazaar/App/database/DBHelper.dart';
 import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:rbazaar/App/productdetails/CartListPage.dart';
+import 'package:rbazaar/utils/StrikeThroughWidget.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 import 'package:rbazaar/utils/mycolors.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -62,7 +63,7 @@ class SearchProductPageState extends State<SearchProductPage> {
                         child: Obx(() => Container(
                             height: Get.height,
                             margin: const EdgeInsets.only(
-                                bottom: 10, top: 0, left: 10, right: 10),
+                                bottom: 10, top: 0, left: 5, right: 5),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -205,11 +206,28 @@ class SearchProductPageState extends State<SearchProductPage> {
       elevation: 5,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0))),
-      child: Container(
+      child: Container( margin: const EdgeInsets.only(bottom: 5, top: 0, left: 0, right: 0),
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(0),
+                  ),
+                  child: FadeInImage(
+                    height: 160,
+                    image: NetworkImage(Constants.imageUrl +
+                        data?.folderName +
+                        data?.fileName ??
+                        ""),
+                    placeholder: AssetImage('assets/images/placeholder.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 Container(
                   alignment: Alignment.centerLeft,
                   margin:
@@ -219,69 +237,81 @@ class SearchProductPageState extends State<SearchProductPage> {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  ),
+
+                ),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.only(
+                            bottom: 3,
+                            top: 4,
+                            left:5,
+                            right: 3),
+                        child: StrikeThroughWidget(
+                          child: Text(
+                              'Rs ' +
+                                  data?.mrps
+                                      .toString(),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold)),
+                        )),
+                    Container(
+                      margin: const EdgeInsets.only(
+                          bottom: 0,
+                          top: 5.0,
+                          left: 3,
+                          right: 3),
+                      child: Text(
+                        "Rs " +
+                            data?.saleRate
+                                .toString(),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  margin: const EdgeInsets.only(
+                      bottom: 3, top: 0, left: 5, right: 10),
+                  child: Text(
+                    "Rs "+gettotalAmount(data?.saleRate,data?.dbQuantityLocal),
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8.0),
-                        topRight: Radius.circular(8.0),
-                        bottomLeft: Radius.circular(8.0),
-                        bottomRight: Radius.circular(8.0),
-                      ),
-                      child: FadeInImage(
-                        height: 150,
-                        width: 150,
-                        image: NetworkImage(Constants.imageUrl +
-                            data?.folderName +
-                            data?.fileName ??
-                            ""),
-                        placeholder: AssetImage('assets/images/placeholder.png'),
-                        fit: BoxFit.fill,
-                      ),
+                Container(
+                  alignment: Alignment.topRight,
+                  margin: const EdgeInsets.only(
+                      bottom: 3, top: 0, left: 5, right: 10),
+                  child: Text(
+                    "Gross wt." +
+                        data?.grossweight.toString() +
+                        " | Net wt." +
+                        data?.netweight.toString(),
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
                     ),
-                    Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              alignment: Alignment.topRight,
-                              margin: const EdgeInsets.only(
-                                  bottom: 3, top: 0, left: 5, right: 10),
-                              child: Text(
-                                "Rs "+gettotalAmount(data?.saleRate,data?.dbQuantityLocal),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.topRight,
-                              margin: const EdgeInsets.only(
-                                  bottom: 3, top: 0, left: 5, right: 10),
-                              child: Text(
-                                "Gross wt." +
-                                    data?.grossweight.toString() +
-                                    " | Net wt." +
-                                    data?.netweight.toString(),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            _getProductsaveDetails(data,prodata),
-                          ],
-                        ))
-                  ],
+                  ),
                 ),
+                _getProductsaveDetails(data,prodata),
               ])),
     );
   }

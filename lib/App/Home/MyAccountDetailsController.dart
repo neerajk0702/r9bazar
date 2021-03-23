@@ -61,6 +61,7 @@ class MyAccountDetailsController extends GetxController {
       if(userInfo!=null && userInfo!='') {
         if (await CommonUtills.ConnectionStatus() == true) {
           AccountdetailModel data = await servicecaller.myaccountdetailData(userInfo);
+          print('AccountdetailModel AccountdetailModelvvvvAccountdetailModelAccountdetailModel');
           if(data.userDetail!=null){
             pref.save("name", data.userDetail.name);
             pref.save("password", data.userDetail.password);

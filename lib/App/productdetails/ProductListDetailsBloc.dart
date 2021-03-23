@@ -27,8 +27,7 @@ class ProductListDetailsBloc {
       if (await CommonUtills.ConnectionStatus() == true) {
         _isLoadingStateController.sink.add(true);
         bool isLoading = _isLoadingStateController.value;
-        ProductDetailsModel subcategoriesModel =
-            await servicecaller.getProductList(productsno, catId);
+        ProductDetailsModel subcategoriesModel =await servicecaller.getProductList(productsno, catId);
         var dbHelper = DBHelper();
         // var total=getTotalItemNo();
         List<Map> ListMap = await dbHelper.getAllProducts();

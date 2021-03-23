@@ -58,7 +58,7 @@ class FlashSalePageState extends State<FlashSalePage> {
                         child: Obx(() => Container(
                             height: Get.height,
                             margin: const EdgeInsets.only(
-                                bottom: 10, top: 0, left: 5, right: 5),
+                                bottom: 10, top: 0, left: 0, right: 0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -138,29 +138,25 @@ class FlashSalePageState extends State<FlashSalePage> {
           // shrinkWrap: true,
           // physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return InkWell(
+            return new InkWell(
                 onTap: () async {
                   Get.to(ProductListDetailsPage(
-                      productName:
-                      controller?.FlashSaleReportModelData?.flashSaleList[index]?.productName,
-                      catId: int.parse(
-                          controller?.FlashSaleReportModelData?.flashSaleList[index].category),
+                      productName:  controller?.FlashSaleReportModelData?.flashSaleList[index]?.productName,
+                      catId: int.parse(controller?.FlashSaleReportModelData?.flashSaleList[index].category),
                       imagePath: Constants.imageUrl +
                           controller?.FlashSaleReportModelData?.flashSaleList[index]?.folderName +
-                          controller?.FlashSaleReportModelData?.flashSaleList[index]
-                              ?.image1Filename ??
+                          controller?.FlashSaleReportModelData?.flashSaleList[index]?.image1Filename ??
                           "",
-                      productTitle:
-                      controller?.FlashSaleReportModelData?.flashSaleList[index]?.productName,
+                      productTitle: controller?.FlashSaleReportModelData?.flashSaleList[index]?.productName,
                       productsno: controller?.FlashSaleReportModelData?.flashSaleList[index]?.sno,
                       mainproductsno: controller?.FlashSaleReportModelData?.flashSaleList[index]?.sno,
                       aliasName:controller?.FlashSaleReportModelData?.flashSaleList[index]?.aliasName));
                 },
                 child: Container(
                   width: Get.width,
-                  color: Colors.white,
+                  color: MyColors.lightblue1,
                   padding: EdgeInsets.only(
-                      top: 0, bottom: 5, left: 0, right: 0),
+                      top: 3, bottom: 3, left: 2, right: 2),
                   child: Card(
                     color: Colors.white,
                     elevation: 5,
@@ -168,12 +164,13 @@ class FlashSalePageState extends State<FlashSalePage> {
                         borderRadius:
                         BorderRadius.all(Radius.circular(8.0))),
                     child: Column(
+                      // crossAxisAlignment: CrossAxisAlignment.stretch,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Container( height:
-                        CommonUtills.displayHeight(context) / 3.5,
-                          child:  ClipRRect(
+
+                        Container( height:160,
+                          child: ClipRRect(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(8.0),
                               topRight: Radius.circular(8.0),
@@ -181,55 +178,104 @@ class FlashSalePageState extends State<FlashSalePage> {
                               bottomRight: Radius.circular(0),
                             ),
                             child: FadeInImage(
+                              // height: 100,
                               image: NetworkImage(Constants.imageUrl +
-                                  controller?.FlashSaleReportModelData?.flashSaleList[index]
-                                      ?.folderName +
-                                  controller?.FlashSaleReportModelData?.flashSaleList[index]
-                                      ?.image1Filename ??
+                                  controller?.FlashSaleReportModelData?.flashSaleList[index]?.folderName +
+                                  controller?.FlashSaleReportModelData?.flashSaleList[index]?.image1Filename ??
                                   ""),
                               placeholder: AssetImage(
                                   'assets/images/placeholder.png'),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                             ),
-                          ),),
-
-                        Container(
-                          margin: const EdgeInsets.only(
-                              bottom: 3, top: 5.0, left: 5, right: 3),
-                          child: Text(
-                            "Rs " +
-                                controller?.FlashSaleReportModelData?.flashSaleList[index]?.saleRate
-                                    .toString(),
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
                           ),
                         ),
                         Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(
-                                bottom: 15, top: 0, left: 5, right: 3),
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-
-                                Text(
-                                  controller?.FlashSaleReportModelData?.flashSaleList[index]
-                                      ?.productName,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    color: Colors.black,
+                                bottom: 0, top: 10, left: 7, right: 3),
+                            child: Text(
+                              controller?.FlashSaleReportModelData?.flashSaleList[index]?.productName,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.normal),
+                            ).tr()),
+                    Container( margin: const EdgeInsets.only(
+                        bottom: 0, top: 0, left: 0, right: 0),
+                      child:
+                        Row(
+                          children: [
+                            Container(
+                                margin: const EdgeInsets.only(
+                                    bottom: 3,
+                                    top: 7,
+                                    left: 7,
+                                    right: 3),
+                                child: StrikeThroughWidget(
+                                  child: Text(
+                                      'Rs ' +
+                                          controller?.FlashSaleReportModelData?.flashSaleList[index].mrp
+                                              .toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold)),
+                                )),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  bottom: 0,
+                                  top: 5.0,
+                                  left: 3,
+                                  right: 3),
+                              child: Text(
+                                "Rs " +
+                                    controller?.FlashSaleReportModelData?.flashSaleList[index].saleRate
+                                        .toString(),
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.red,
                                     fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                ).tr(),
-                              ],
-                            )),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        )),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(
+                              bottom: 10, top: 0, left: 7, right: 10),
+                          child: Text(
+                            "Gross wt." +
+                                controller?.FlashSaleReportModelData?.flashSaleList[index]?.grossweight
+                                    .toString() +
+                                " | Net wt." +
+                                controller?.FlashSaleReportModelData?.flashSaleList[index]?.netWeight
+                                    .toString(),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                       /* Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(
+                              bottom: 15, top: 2, left: 7, right: 3),
+                          child: Text(
+                            controller?.FlashSaleReportModelData?.flashSaleList[index]?.aliasName,
+                            maxLines: 3,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ).tr(),
+                        )*/
                       ],
                     ),
                   ),

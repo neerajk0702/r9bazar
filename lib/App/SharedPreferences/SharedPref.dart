@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:rbazaar/App/model/User.dart';
-import 'file:///D:/Neeraj/git%20project/rbazaar/lib/App/model/AddTocartLocal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {

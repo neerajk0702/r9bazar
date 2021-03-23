@@ -43,7 +43,8 @@ class Constants {
   static const String cameraDesc = 'Please enable camera permission?';
   static const String mediaTitle = 'Enable Permission';
   static const String mediaDesc = 'Please enable media permission?';
-
+  static const APP_STORE_URL ='https://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=YOUR-APP-ID&mt=8';
+  static const PLAY_STORE_URL ='https://play.google.com/store/apps/details?id=com.apitechnosoft.rbazaar';
 
 
 

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
@@ -41,6 +44,10 @@ import 'Homemodel.dart';
 import 'MyAccountDetailsController.dart';
 import 'SliderModel.dart';
 import 'homebloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info/package_info.dart';
+
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -52,15 +59,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   AnimationController animationController;
   HomeBloc bloc = HomeBloc();
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
-  String username = "",
-      useremail = "",
-      userimage = "",
-      phone = "";
+  String username = "", useremail = "", userimage = "", phone = "";
   int difficultyLevel, ageSegment;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  new GlobalKey<RefreshIndicatorState>();
-  final MyAccountDetailsController controller =
-  Get.put(MyAccountDetailsController());
+      new GlobalKey<RefreshIndicatorState>();
+  final MyAccountDetailsController controller =Get.put(MyAccountDetailsController());
   String cuttentLocation = '';
 
   @override
@@ -76,9 +79,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     gettingCurrentLocationSave();
     controller.accountDetailsSC();
     bloc.getHomeData();
+
+    try {
+      versionCheck(context);
+    } catch (e) {
+      print(e);
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +105,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
-                          Get.offAll(DeliveryBoyHomePage());
+                          Get.offAll(HomePage());
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -237,9 +244,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Divider(),
                     InkWell(
                         onTap: () {
-                            Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/contact.html',title:'Contact us')));
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => WebPage(
+                                  url:
+                                      'https://www.r9bazaar.com/resources/page/contact.html',
+                                  title: 'Contact us')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -297,9 +307,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           top: 5, bottom: 5, left: 15, right: 10),
                       child: Row(
                         children: [
-                          Expanded(child: Divider(
-                              color: Colors.black
-                          ),),
+                          Expanded(
+                            child: Divider(color: Colors.black),
+                          ),
                           Text(
                             'Other Link',
                             style: TextStyle(
@@ -307,9 +317,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),
-                          Expanded(child: Divider(
-                              color: Colors.black
-                          ),),
+                          Expanded(
+                            child: Divider(color: Colors.black),
+                          ),
                         ],
                       ),
                     ),
@@ -318,14 +328,17 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           // showCourseCompleteDialog();
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/faq.html',title:'FAQs')));
+                              builder: (BuildContext context) => WebPage(
+                                  url:
+                                      'https://www.r9bazaar.com/resources/page/faq.html',
+                                  title: 'FAQs')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
                               top: 5, bottom: 5, left: 15, right: 10),
                           child: Row(
                             children: [
-                           /*   Icon(
+                              /*   Icon(
                                 Icons.question_answer_rounded,
                                 color: MyColors.lightblue,
                                 size: 28,
@@ -348,7 +361,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/termscondition.html',title:'Terms and Conditions')));
+                              builder: (BuildContext context) => WebPage(
+                                  url:
+                                      'https://www.r9bazaar.com/resources/page/termscondition.html',
+                                  title: 'Terms and Conditions')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -378,7 +394,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/privacypolicy.html',title:'Privacy Policy')));
+                              builder: (BuildContext context) => WebPage(
+                                  url:
+                                      'https://www.r9bazaar.com/resources/page/privacypolicy.html',
+                                  title: 'Privacy Policy')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -408,7 +427,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => WebPage(url:'https://www.r9bazaar.com/resources/page/refundpolicy.html',title:'Refund Return Cancellation Policy')));
+                              builder: (BuildContext context) => WebPage(
+                                  url:
+                                      'https://www.r9bazaar.com/resources/page/refundpolicy.html',
+                                  title: 'Refund Return Cancellation Policy')));
                         },
                         child: Container(
                           margin: EdgeInsets.only(
@@ -434,7 +456,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         )),
 
-                   /* Divider(),
+                    /* Divider(),
                     InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
@@ -446,11 +468,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               top: 5, bottom: 5, left: 15, right: 10),
                           child: Row(
                             children: [
-                             *//* Icon(
+                             */ /* Icon(
                                 Icons.question_answer_rounded,
                                 color: MyColors.lightblue,
                                 size: 28,
-                              ),*//*
+                              ),*/ /*
                               SizedBox(
                                 width: 5,
                               ),
@@ -490,31 +512,29 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       children: [
                         Container(
                             child: StreamBuilder<Homemodel>(
-                              stream: bloc.homeServiceSubject.stream,
-                              builder:
-                                  (context, AsyncSnapshot<Homemodel> snapshot) {
-                                if (snapshot.hasData) {
-                                  if (snapshot.error == null &&
-                                      snapshot.data.status == false) {
-                                    return _buildErrorWidget(
-                                        snapshot.data.message);
-                                  } else if (snapshot.error == null &&
-                                      snapshot.data.isNull) {
-                                    return _buildErrorWidget("No Data Found");
-                                  } else if (snapshot.error != null ||
-                                      snapshot.data.isNull) {
-                                    return _buildErrorWidget(snapshot.error);
-                                  }
-                                  return _buildUserWidget(snapshot.data);
-                                } else if (snapshot.hasError) {
-                                  return _buildErrorWidget(snapshot.error);
-                                } else {
-                                  return Positioned(
-                                      child: Center(
-                                          child: _buildLoadingWidget()));
-                                }
-                              },
-                            )),
+                          stream: bloc.homeServiceSubject.stream,
+                          builder:
+                              (context, AsyncSnapshot<Homemodel> snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.error == null &&
+                                  snapshot.data.status == false) {
+                                return _buildErrorWidget(snapshot.data.message);
+                              } else if (snapshot.error == null &&
+                                  snapshot.data.isNull) {
+                                return _buildErrorWidget("No Data Found");
+                              } else if (snapshot.error != null ||
+                                  snapshot.data.isNull) {
+                                return _buildErrorWidget(snapshot.error);
+                              }
+                              return _buildUserWidget(snapshot.data);
+                            } else if (snapshot.hasError) {
+                              return _buildErrorWidget(snapshot.error);
+                            } else {
+                              return Positioned(
+                                  child: Center(child: _buildLoadingWidget()));
+                            }
+                          },
+                        )),
                         /*Positioned(
                             child:
                                 Center(child: _buildLoadingWidgetForComment())),*/
@@ -535,129 +555,122 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: [
           Expanded(
               child: Row(
-                children: [
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                          icon: Icon(Icons.menu, color: Colors.white),
-                          onPressed: () =>
-                              _scaffoldState.currentState.openDrawer())),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(alignment: Alignment.center,
-                                      margin: const EdgeInsets.only(
-                                          bottom: 10,
-                                          top: 0,
-                                          left: 0,
-                                          right: 0),
-                                      child: Text(
-                                        'Choose delivery location',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                  Divider(
-                                    height: 2,
-                                    color: Colors.black,
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        getlocation();
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        height: 30,
-                                        margin: const EdgeInsets.only(
-                                            bottom: 0,
-                                            top: 10,
-                                            left: 5,
-                                            right: 55),
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              topRight: const Radius.circular(
-                                                  5.0),
-                                              bottomRight:
-                                              const Radius.circular(5.0),
-                                              bottomLeft:
-                                              const Radius.circular(5.0),
-                                              topLeft: const Radius.circular(
-                                                  5.0)),
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            stops: [0.0, 0.7],
-                                            colors: [
-                                              Color(0xFF25306a),
-                                              Color(0xFF25306a),
-                                            ],
-                                          ),
-                                          color: Color(0xff312E32),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.add_location,
-                                              color: Colors.white,
-                                              size: 20,
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              'Use my location',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                            ).tr(),
-                                          ],
-                                        ),
-                                      ))
-                                ],
+            children: [
+              Container(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                      icon: Icon(Icons.menu, color: Colors.white),
+                      onPressed: () =>
+                          _scaffoldState.currentState.openDrawer())),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  alignment: Alignment.center,
+                                  margin: const EdgeInsets.only(
+                                      bottom: 10, top: 0, left: 0, right: 0),
+                                  child: Text(
+                                    'Choose delivery location',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                              Divider(
+                                height: 2,
+                                color: Colors.black,
                               ),
-                              content: setupAlertDialoadContainer(data),
-                            );
-                          });
-                    },
-                    child: Container(
-                      child: RichText(
-                        maxLines: 1,
-                        text: TextSpan(children: [
-                          TextSpan(
-                              text: cuttentLocation == ''
-                                  ? "Select your location"
-                                  : cuttentLocation,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12)),
-                          WidgetSpan(
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 18,
-                              color: Colors.white,
-                            ),
+                              InkWell(
+                                  onTap: () {
+                                    getlocation();
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 30,
+                                    margin: const EdgeInsets.only(
+                                        bottom: 0, top: 10, left: 5, right: 55),
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topRight: const Radius.circular(5.0),
+                                          bottomRight:
+                                              const Radius.circular(5.0),
+                                          bottomLeft:
+                                              const Radius.circular(5.0),
+                                          topLeft: const Radius.circular(5.0)),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        stops: [0.0, 0.7],
+                                        colors: [
+                                          Color(0xFF25306a),
+                                          Color(0xFF25306a),
+                                        ],
+                                      ),
+                                      color: Color(0xff312E32),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.add_location,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'Use my location',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ).tr(),
+                                      ],
+                                    ),
+                                  ))
+                            ],
                           ),
-                        ]),
+                          content: setupAlertDialoadContainer(data),
+                        );
+                      });
+                },
+                child: Container(
+                  child: RichText(
+                    maxLines: 1,
+                    text: TextSpan(children: [
+                      TextSpan(
+                          text: cuttentLocation == ''
+                              ? "Select your location"
+                              : cuttentLocation,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12)),
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              )),
+                    ]),
+                  ),
+                ),
+              )
+            ],
+          )),
           /* Expanded(
               child: Container(
                   alignment: Alignment.centerRight,
@@ -724,19 +737,23 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget _buildUserWidget(Homemodel data) {
     return Container(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _topBar(data),
-            /*_name(data),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _topBar(data),
+        /*_name(data),
       _userScore(data),
       data.trendingcourserdata.length>0? _trendingCourse(data):SizedBox(),
       data.courseforyoudata.length>0? _courseForYou(data):SizedBox(),
       data.inProgressListData.length>0? _courseInProgress(data):SizedBox()*/
-            Container(height: 50,
-              child:  Row( crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,children: [
-                Expanded(child:   Container(
+        Container(
+          height: 50,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Container(
                     margin: const EdgeInsets.only(
                         bottom: 0, top: 10, left: 10, right: 10),
                     child: TextField(
@@ -756,229 +773,240 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           borderSide: BorderSide(color: Colors.black),
                         ),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                            new BorderRadius.circular(20.0),
+                            borderRadius: new BorderRadius.circular(20.0),
                             borderSide: BorderSide(
                               color: MyColors.primaryColor,
                             )),
                         isDense: true,
                         // Added this
-                        contentPadding:
-                        EdgeInsets.fromLTRB(10, 20, 10, 10),
+                        contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 10),
                       ),
                       cursorColor: Colors.black,
                       style: TextStyle(color: Colors.black),
-                    )),),
-                Container( margin: const EdgeInsets.only(
-                    bottom: 0, top: 5, left: 0, right: 5),
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(iconSize: 35,
-                        icon: Icon(Icons.search, color: MyColors.primaryColor),
-                        onPressed: () {
-                          if(controller.productname==null || controller.productname==''){
-                            CommonUtills.flutterToast("Please enter product name");
-                          }else{
-                            Get.to(SearchProductPage(productName:controller.productname));
-                          }
-
-                        }))
-              ],),),
-            bottomMenu(data),
-            topImge(data),
-            _hotDeal(data),
-            data?.flashSaleList.length > 0
-                ? _FlashSale(data)
-                : SizedBox(
-              height: 10,
-            ),
-            Container(
-                margin: EdgeInsets.only(top: 20, left: 0, right: 0),
-                color: Colors.white,
-                alignment: Alignment.center,
-                width: double.infinity,
-                child: Column(
+                    )),
+              ),
+              Container(
+                  margin: const EdgeInsets.only(
+                      bottom: 0, top: 5, left: 0, right: 5),
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                      iconSize: 35,
+                      icon: Icon(Icons.search, color: MyColors.primaryColor),
+                      onPressed: () {
+                        if (controller.productname == null ||
+                            controller.productname == '') {
+                          CommonUtills.flutterToast(
+                              "Please enter product name");
+                        } else {
+                          Get.to(SearchProductPage(
+                              productName: controller.productname));
+                        }
+                      }))
+            ],
+          ),
+        ),
+        bottomMenu(data),
+        topImge(data),
+        _hotDeal(data),
+        data?.flashSaleList.length > 0
+            ? _FlashSale(data)
+            : SizedBox(
+                height: 10,
+              ),
+        Container(
+            margin: EdgeInsets.only(top: 20, left: 0, right: 0),
+            color: Colors.white,
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                    margin:
+                        EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 10),
+                    child: Text(
+                      'Why R9bazaar ?',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.left,
+                    )),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 15,),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 0, left: 20, right: 0),
+                          child: Row(
+                            children: [
+                              Center(
+                                child: Container(
+                                  height: 40,
+                                  child: FittedBox(
+                                      fit: BoxFit.fill,
+                                      child: Image.asset(
+                                        'assets/images/car.png',
+                                      )),
+                                ),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      top: 0, left: 5, right: 10),
+                                  width: 80,
+                                  child: Text(
+                                    'Fast And Free Delivery',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ))
+                            ],
+                          )),
+                    ),
                     Container(
-                        margin:
-                        EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 10),
-                        child: Text(
-                          'Why R9bazaar ?',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.left,
-                        )),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(flex: 1, child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 0, left: 20, right: 0),
-                            child: Row(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    height: 40,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Image.asset(
-                                          'assets/images/car.png',
-                                        )),
-                                  ),
-                                ),
-                                Container(
-                                    margin:
-                                    EdgeInsets.only(top: 0, left: 5, right: 10),
-                                    width: 80,
-                                    child: Text(
-                                      'Fast And Free Delivery',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ))
-                              ],
-                            )),),
-                        Container(alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                top: 0, left: 10, right: 20),
-                            child: Row(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    height: 50,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Image.asset(
-                                          'assets/images/organic.png',
-                                        )),
-                                  ),
-                                ),
-                                Container(
-                                    margin:
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 0, left: 10, right: 20),
+                        child: Row(
+                          children: [
+                            Center(
+                              child: Container(
+                                height: 50,
+                                child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Image.asset(
+                                      'assets/images/organic.png',
+                                    )),
+                              ),
+                            ),
+                            Container(
+                                margin:
                                     EdgeInsets.only(top: 0, left: 5, right: 5),
-                                    width: 80,
-                                    child: Text(
-                                      '100% Organic 100% Fresh',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ))
-                              ],
-                            ))
-
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                top: 15, left: 20, right: 0),
-                            child: Row(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    height: 40,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Image.asset(
-                                          'assets/images/netweight.png',
-                                        )),
+                                width: 80,
+                                child: Text(
+                                  '100% Organic 100% Fresh',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
                                   ),
-                                ),
-                                Container(
-                                    margin:
-                                    EdgeInsets.only(top: 0, left: 5, right: 10),
-                                    width: 80,
-                                    child: Text(
-                                      'Pay Only For NET WEIGHT',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ))
-                              ],
-                            )),),
-
-                        Container(
-                            margin: EdgeInsets.only(
-                                top: 10, left: 10, right: 20, bottom: 0),
-                            child: Row(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    height: 50,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Image.asset(
-                                          'assets/images/nowestage.png',
-                                        )),
-                                  ),
-                                ),
-                                Container(
-                                    margin:
-                                    EdgeInsets.only(top: 0, left: 5, right: 5),
-                                    width: 80,
-                                    child: Text(
-                                      'No Wastage',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ))
-                              ],
-                            )),
-                      ],
-                    ),
-                    SizedBox(height: 15,)
+                                  textAlign: TextAlign.left,
+                                ))
+                          ],
+                        ))
                   ],
-                )),
-            _category(data),
-            Container(
-                margin: EdgeInsets.only(top: 20, left: 0, right: 0),
-                color: Colors.white,
-                alignment: Alignment.center,
-                width: double.infinity,
-                child: Center(
-                  child: Container(
-                    height: 200,
-                    child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Image.asset(
-                          'assets/images/demo2.jpg',
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 15, left: 20, right: 0),
+                          child: Row(
+                            children: [
+                              Center(
+                                child: Container(
+                                  height: 40,
+                                  child: FittedBox(
+                                      fit: BoxFit.fill,
+                                      child: Image.asset(
+                                        'assets/images/netweight.png',
+                                      )),
+                                ),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      top: 0, left: 5, right: 10),
+                                  width: 80,
+                                  child: Text(
+                                    'Pay Only For NET WEIGHT',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ))
+                            ],
+                          )),
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                            top: 10, left: 10, right: 20, bottom: 0),
+                        child: Row(
+                          children: [
+                            Center(
+                              child: Container(
+                                height: 50,
+                                child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Image.asset(
+                                      'assets/images/nowestage.png',
+                                    )),
+                              ),
+                            ),
+                            Container(
+                                margin:
+                                    EdgeInsets.only(top: 0, left: 5, right: 5),
+                                width: 80,
+                                child: Text(
+                                  'No Wastage',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ))
+                          ],
                         )),
-                  ),
-                )),
-          ],
-        ));
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                )
+              ],
+            )),
+        _category(data),
+        Container(
+            margin: EdgeInsets.only(top: 20, left: 0, right: 0),
+            color: Colors.white,
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: Center(
+              child: Container(
+                height: 200,
+                child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Image.asset(
+                      'assets/images/demo2.jpg',
+                    )),
+              ),
+            )),
+      ],
+    ));
   }
 
   Widget topImge(Homemodel data) {
@@ -1001,10 +1029,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget bottomMenu(Homemodel data) {
     return SizedBox(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height / 6,
+        height: MediaQuery.of(context).size.height / 6,
         // width: CommonUtills.displayWidth(context),
         child: Container(
           alignment: Alignment.center,
@@ -1027,11 +1052,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             Expanded(
                               child: FadeInImage(
                                 image: NetworkImage(Constants.imageUrl +
-                                    data?.categories[index]?.folderName +
-                                    data?.categories[index]?.iconFileName ??
+                                        data?.categories[index]?.folderName +
+                                        data?.categories[index]?.iconFileName ??
                                     ""),
                                 placeholder:
-                                AssetImage('assets/images/placeholder.png'),
+                                    AssetImage('assets/images/placeholder.png'),
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1117,15 +1142,163 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             height: 10,
           ),
           Container(
+            margin: EdgeInsets.all(0),
+            child:StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: data?.deals.length > 6 ? 6 : data?.deals.length,
+              itemBuilder: (BuildContext context, int index) => Container(
+                child:  InkWell(
+                    onTap: () async {
+                      Get.to(ProductListDetailsPage(
+                          productName: data?.deals[index]?.productName,
+                          catId: int.parse(data?.deals[index].category),
+                          imagePath: Constants.imageUrl +
+                              data?.deals[index]?.folderName +
+                              data?.deals[index]?.fileName ??
+                              "",
+                          productTitle: data?.deals[index]?.productName,
+                          productsno: data?.deals[index]?.productid,
+                          mainproductsno: data?.deals[index]?.productid,
+                          aliasName: data?.deals[index]?.aliasName));
+                    },
+                    child: Container(
+                      width: Get.width,
+                      color: MyColors.lightblue1,
+                      padding: EdgeInsets.only(
+                          top: 3, bottom: 3, left: 2, right: 2),
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(8.0))),
+                        child: Column(
+                          // crossAxisAlignment: CrossAxisAlignment.stretch,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              height: 160,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8.0),
+                                  topRight: Radius.circular(8.0),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(0),
+                                ),
+                                child: FadeInImage(
+                                  // height: 100,
+                                  image: NetworkImage(Constants.imageUrl +
+                                      data?.deals[index]?.folderName +
+                                      data?.deals[index]?.fileName ??
+                                      ""),
+                                  placeholder: AssetImage(
+                                      'assets/images/placeholder.png'),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.only(
+                                    bottom: 0, top: 10, left: 7, right: 3),
+                                child: Text(
+                                  data?.deals[index]?.productName,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.normal),
+                                ).tr()),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: 3,
+                                        top: 7,
+                                        left: 7,
+                                        right: 3),
+                                    child: StrikeThroughWidget(
+                                      child: Text(
+                                          'Rs ' +
+                                              data?.deals[index].mrps
+                                                  .toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold)),
+                                    )),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: 0,
+                                      top: 5.0,
+                                      left: 3,
+                                      right: 3),
+                                  child: Text(
+                                    "Rs " +
+                                        data?.deals[index].saleRate
+                                            .toString(),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              margin: const EdgeInsets.only(
+                                  bottom: 10, top: 0, left: 7, right: 10),
+                              child: Text(
+                                "Gross wt." +
+                                    data?.deals[index]?.grossweight
+                                        .toString() +
+                                    " | Net wt." +
+                                    data?.deals[index]?.netweight
+                                        .toString(),
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+              ),
+              staggeredTileBuilder: (int index) =>
+              new StaggeredTile.fit(2),
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
+            ),
+          ),
+          /* Container(
               child: GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: data?.deals.length > 6 ? 6 : data?.deals.length,
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio:0.7),
+                      childAspectRatio: MediaQuery
+                          .of(context)
+                          .size
+                          .width /
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .height / 1)
+                  ),
                   itemBuilder: (BuildContext context, int index) {
-                    return new InkWell(
+                    return new Container(child: InkWell(
                         onTap: () async {
                           Get.to(ProductListDetailsPage(
                               productName: data?.deals[index]?.productName,
@@ -1140,6 +1313,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               aliasName: data?.deals[index]?.aliasName));
                         },
                         child: Container(
+
                           width: Get.width,
                           color: MyColors.lightblue1,
                           padding: EdgeInsets.only(
@@ -1250,139 +1424,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ],
                             ),
                           ),
-                        ));
+                        )),)
+                    ;
                   })
-            /*   GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: data?.deals?.length,
-                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1),
-                  itemBuilder: (BuildContext context, int index) {
-                    return new InkWell(
-                        onTap: () async {
-                          Get.to(ProductListDetailsPage(
-                              productName: data?.deals[index]?.productName,
-                              catId: int.parse(data?.deals[index].category),
-                              imagePath: Constants.imageUrl +
-                                      data?.deals[index]?.folderName +
-                                      data?.deals[index]?.fileName ??
-                                  "",
-                              productTitle: data?.deals[index]?.productName,
-                              productsno: data?.deals[index]?.productid,
-                              mainproductsno: data?.deals[index]?.productid));
-                        },
-                        child: Container(
-                          width: Get.width,
-                          color: MyColors.lightblue1,
-                          padding: EdgeInsets.only(
-                              top: 3, bottom: 3, left: 2, right: 2),
-                          child: Card(
-                            color: Colors.white,
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0))),
-                            child: Column(
-                              // crossAxisAlignment: CrossAxisAlignment.stretch,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  height: 250,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(8.0),
-                                      topRight: Radius.circular(8.0),
-                                      bottomLeft: Radius.circular(0),
-                                      bottomRight: Radius.circular(0),
-                                    ),
-                                    child: FadeInImage(
-                                      // height: 100,
-                                      image: NetworkImage(Constants.imageUrl +
-                                              data?.deals[index]?.folderName +
-                                              data?.deals[index]?.fileName ??
-                                          ""),
-                                      placeholder: AssetImage(
-                                          'assets/images/placeholder.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                    alignment: Alignment.centerLeft,
-                                    margin: const EdgeInsets.only(
-                                        bottom: 0, top: 10, left: 7, right: 3),
-                                    child: Text(
-                                      data?.deals[index]?.productName,
-                                      maxLines: 2,
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          fontStyle: FontStyle.normal),
-                                    ).tr()),
-                                Row(
-                                  children: [
-                                    Container(
-                                        margin: const EdgeInsets.only(
-                                            bottom: 3,
-                                            top: 7,
-                                            left: 7,
-                                            right: 3),
-                                        child: StrikeThroughWidget(
-                                          child: Text(
-                                              'Rs ' +
-                                                  data?.deals[index].mrps
-                                                      .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold)),
-                                        )),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          bottom: 0,
-                                          top: 5.0,
-                                          left: 3,
-                                          right: 3),
-                                      child: Text(
-                                        "Rs " +
-                                            data?.deals[index].saleRate
-                                                .toString(),
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  margin: const EdgeInsets.only(
-                                      bottom: 5, top: 2, left: 7, right: 3),
-                                  child: Text(
-                                    data?.deals[index]?.aliasName,
-                                    maxLines: 3,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                  ).tr(),
-                                )
-                              ],
-                            ),
-                          ),
-                        ));
-                  })*/
-
-          ),
+            */
         ],
       ),
     );
@@ -1434,67 +1479,184 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ))
             ],
           ),
-          data?.saleEndDatetime != null
-              ? Container(
-              margin: EdgeInsets.only(top: 5, left: 0, right: 5),
-              child: CountdownTimer(
-                endTime: DateTime
-                    .parse(data?.saleEndDatetime)
-                    .millisecondsSinceEpoch,
-                widgetBuilder: (_, CurrentRemainingTime time) {
-                  if (time == null) {
-                    return Text('');
-                  }
-                  return Text(
-                    'Days: ${time.days} , Hours: ${time.hours} , Min: ${time
-                        .min} , Sec: ${time.sec} ',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.left,
-                  );
-                },
-              ))
-              : SizedBox(
-            height: 2,
-          ),
+          _saleTimer(data),
           SizedBox(
             height: 10,
           ),
-
-          //// Trending Course List
           Container(
+            margin: EdgeInsets.all(0),
+            child:StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: data?.flashSaleList.length > 6? 6: data?.flashSaleList.length,
+              itemBuilder: (BuildContext context, int index) => Container(
+                  child:
+                   InkWell(
+                      onTap: () async {
+                        Get.to(ProductListDetailsPage(
+                            productName:
+                            data?.flashSaleList[index]?.productName,
+                            catId: int.parse(
+                                data?.flashSaleList[index].category),
+                            imagePath: Constants.imageUrl +
+                                data?.flashSaleList[index]?.folderName +
+                                data?.flashSaleList[index]
+                                    ?.image1Filename ??
+                                "",
+                            productTitle:
+                            data?.flashSaleList[index]?.productName,
+                            productsno: data?.flashSaleList[index]?.sno,
+                            mainproductsno: data?.flashSaleList[index]?.sno,
+                            aliasName:
+                            data?.flashSaleList[index]?.aliasName));
+                      },
+                      child:  Container(
+                        width: Get.width,
+                        color: MyColors.lightblue1,
+                        padding: EdgeInsets.only(
+                            top: 3, bottom: 3, left: 2, right: 2),
+                        child: Card(
+                          color: Colors.white,
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(8.0))),
+                          child: Column(
+                            // crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                height: 160,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8.0),
+                                    topRight: Radius.circular(8.0),
+                                    bottomLeft: Radius.circular(0),
+                                    bottomRight: Radius.circular(0),
+                                  ),
+                                  child: FadeInImage(
+                                    // height: 100,
+                                    image: NetworkImage(Constants.imageUrl +
+                                        data?.flashSaleList[index]?.folderName +
+                                        data?.flashSaleList[index]?.image1Filename ??
+                                        ""),
+                                    placeholder: AssetImage(
+                                        'assets/images/placeholder.png'),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  alignment: Alignment.centerLeft,
+                                  margin: const EdgeInsets.only(
+                                      bottom: 0, top: 10, left: 7, right: 3),
+                                  child: Text(
+                                    data?.flashSaleList[index]?.productName,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.normal),
+                                  ).tr()),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      margin: const EdgeInsets.only(
+                                          bottom: 3,
+                                          top: 7,
+                                          left: 7,
+                                          right: 3),
+                                      child: StrikeThroughWidget(
+                                        child: Text(
+                                            'Rs ' +
+                                                data?.flashSaleList[index].mrp
+                                                    .toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold)),
+                                      )),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: 0,
+                                        top: 5.0,
+                                        left: 3,
+                                        right: 3),
+                                    child: Text(
+                                      "Rs " +
+                                          data?.flashSaleList[index].saleRate
+                                              .toString(),
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.only(
+                                    bottom: 10, top: 0, left: 7, right: 10),
+                                child: Text(
+                                  "Gross wt." +
+                                      data?.flashSaleList[index]?.grossweight
+                                          .toString() +
+                                      " | Net wt." +
+                                      data?.flashSaleList[index]?.netWeight
+                                          .toString(),
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ))
+              ),
+              staggeredTileBuilder: (int index) =>
+              new StaggeredTile.fit(2),
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
+            ),
+          ),
+
+         /* Container(
               color: MyColors.lightblue1,
               child: GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: data?.flashSaleList.length > 6
-                      ? 6
-                      : data?.flashSaleList.length,
+                  itemCount: data?.flashSaleList.length > 6? 6: data?.flashSaleList.length,
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio:0.7),
+                      crossAxisCount: 2, childAspectRatio: 0.7),
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                         onTap: () async {
                           Get.to(ProductListDetailsPage(
                               productName:
-                              data?.flashSaleList[index]?.productName,
+                                  data?.flashSaleList[index]?.productName,
                               catId: int.parse(
                                   data?.flashSaleList[index].category),
                               imagePath: Constants.imageUrl +
-                                  data?.flashSaleList[index]?.folderName +
-                                  data?.flashSaleList[index]
-                                      ?.image1Filename ??
+                                      data?.flashSaleList[index]?.folderName +
+                                      data?.flashSaleList[index]
+                                          ?.image1Filename ??
                                   "",
                               productTitle:
-                              data?.flashSaleList[index]?.productName,
+                                  data?.flashSaleList[index]?.productName,
                               productsno: data?.flashSaleList[index]?.sno,
                               mainproductsno: data?.flashSaleList[index]?.sno,
                               aliasName:
-                              data?.flashSaleList[index]?.aliasName));
+                                  data?.flashSaleList[index]?.aliasName));
                         },
                         child: Container(
                           width: Get.width,
@@ -1506,13 +1668,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             elevation: 5,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
+                                    BorderRadius.all(Radius.circular(8.0))),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  height:160,
+                                  height: 160,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8.0),
@@ -1522,10 +1684,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ),
                                     child: FadeInImage(
                                       image: NetworkImage(Constants.imageUrl +
-                                          data?.flashSaleList[index]
-                                              ?.folderName +
-                                          data?.flashSaleList[index]
-                                              ?.image1Filename ??
+                                              data?.flashSaleList[index]
+                                                  ?.folderName +
+                                              data?.flashSaleList[index]
+                                                  ?.image1Filename ??
                                           ""),
                                       placeholder: AssetImage(
                                           'assets/images/placeholder.png'),
@@ -1553,7 +1715,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         bottom: 15, top: 0, left: 5, right: 3),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           data?.flashSaleList[index]
@@ -1573,11 +1735,36 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ),
                           ),
                         ));
-                  })),
+                  })),*/
         ],
       ),
     );
   }
+
+  Widget _saleTimer(Homemodel data) {
+    return Container(
+        margin: EdgeInsets.only(top: 5, left: 0, right: 5),
+        child: CountdownTimer(
+          endTime: DateTime.parse(data?.saleEndDatetime)
+              .millisecondsSinceEpoch,
+          widgetBuilder: (_, CurrentRemainingTime time) {
+            if (time == null) {
+              return Text('');
+            }
+            return Text(
+              'Days: ${time.days!=null?time.days:'0'} , Hours: ${time.hours!=null?time.hours:'0'} , Min: ${time.min!=null?time.min:'0'} , Sec: ${time.sec!=null?time.sec:'0'} ',
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+              textAlign: TextAlign.left,
+            );
+          },
+        ));
+
+  }
+
 
   Widget _category(Homemodel data) {
     return Container(
@@ -1606,14 +1793,94 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             height: 10,
           ),
           Container(
+            margin: EdgeInsets.all(0),
+            child:StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: data?.categories.length,
+              itemBuilder: (BuildContext context, int index) => Container(
+                  child: new InkWell(
+                    child: Container(
+                      width: CommonUtills.displayWidth(context),
+                      color: MyColors.lightblue1,
+                      padding: EdgeInsets.only(
+                          top: 3, bottom: 3, left: 2, right: 2),
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(8.0))),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              height: 160,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8.0),
+                                  topRight: Radius.circular(8.0),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(0),
+                                ),
+                                child: FadeInImage(
+                                  // height: 100,
+                                  image: NetworkImage(Constants.imageUrl +
+                                      data?.categories[index]
+                                          ?.folderName +
+                                      data?.categories[index]
+                                          ?.imageFileName ??
+                                      ""),
+                                  placeholder: AssetImage(
+                                      'assets/images/placeholder.png'),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  bottom: 10, top: 10.0, left: 3, right: 3),
+                              child: Text(
+                                data?.categories[index]?.menuName,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      String bannerImage = Constants.imageUrl +
+                          data?.categories[index]?.folderName +
+                          data?.categories[index]?.bannerFileName;
+                      Get.to(SubCategoryTabPage(
+                          catName: data?.categories[index]?.menuName,
+                          catId: data?.categories[index]?.sno,
+                          catImagePath: bannerImage));
+                    },
+                  )
+              ),
+              staggeredTileBuilder: (int index) =>
+              new StaggeredTile.fit(2),
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
+            ),
+          ),
+
+       /*   Container(
               color: MyColors.lightblue1,
               child: GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: data?.categories.length,
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio:0.9),
+                      crossAxisCount: 2, childAspectRatio: 0.9),
                   itemBuilder: (BuildContext context, int index) {
                     return new InkWell(
                       child: Container(
@@ -1626,14 +1893,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           elevation: 5,
                           shape: RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(8.0))),
+                                  BorderRadius.all(Radius.circular(8.0))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                height: 160
-                                ,
+                                height: 160,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8.0),
@@ -1644,10 +1910,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   child: FadeInImage(
                                     // height: 100,
                                     image: NetworkImage(Constants.imageUrl +
-                                        data?.categories[index]
-                                            ?.folderName +
-                                        data?.categories[index]
-                                            ?.imageFileName ??
+                                            data?.categories[index]
+                                                ?.folderName +
+                                            data?.categories[index]
+                                                ?.imageFileName ??
                                         ""),
                                     placeholder: AssetImage(
                                         'assets/images/placeholder.png'),
@@ -1682,72 +1948,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       },
                     );
                   })
-            /*  GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: data?.categories.length,
-                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1),
-                  itemBuilder: (BuildContext context, int index) {
-                    return new InkWell(
-                      child: Container( height:100,
-                        width: CommonUtills.displayWidth(context),
-                        color: MyColors.lightblue1,
-                        padding: EdgeInsets.only(
-                            top: 3, bottom: 3, left: 2, right: 2),
-                        child: Card(
-                          color: Colors.white,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              FadeInImage(
-                                height: 250,
-                                image: NetworkImage(Constants.imageUrl +
-                                    data?.categories[index]
-                                        ?.folderName +
-                                    data?.categories[index]
-                                        ?.imageFileName ??
-                                    ""),
-                                placeholder: AssetImage(
-                                    'assets/images/placeholder.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: 3, top: 10.0, left: 3, right: 3),
-                                  child: Text(
-                                    data?.categories[index]?.menuName,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        String bannerImage = Constants.imageUrl +
-                            data?.categories[index]?.folderName +
-                            data?.categories[index]?.bannerFileName;
-                        Get.to(SubCategoryTabPage(
-                            catName: data?.categories[index]?.menuName,
-                            catId: data?.categories[index]?.sno,
-                            catImagePath: bannerImage));
-                      },
-                    );
-                  })*/
-
-          )
+              )*/
         ],
       ),
     );
@@ -1756,11 +1957,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget _buildErrorWidget(String message) {
     return Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(message),
-          ],
-        ));
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(message),
+      ],
+    ));
   }
 
   Widget _buildLoadingWidget() {
@@ -1769,7 +1970,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       builder: (context, snap) {
         return Container(
           child:
-          (snap.hasData && snap.data) ? CircularProgressIndicator() : null,
+              (snap.hasData && snap.data) ? CircularProgressIndicator() : null,
         );
       },
     );
@@ -1940,8 +2141,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     height: 200,
                     width: Get.width,
                     image: NetworkImage(Constants.imageUrl +
-                        data?.folderName +
-                        data?.fileName ??
+                            data?.folderName +
+                            data?.fileName ??
                         ""),
                     placeholder: AssetImage('assets/images/placeholder.png'),
                     fit: BoxFit.cover,
@@ -1991,12 +2192,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 margin: EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
                 alignment: Alignment.center,
                 child: Text('nextLevel',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal),
-                    textAlign: TextAlign.center)
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal),
+                        textAlign: TextAlign.center)
                     .tr()),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -2005,7 +2206,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   flex: 1,
                   child: Container(
                     margin:
-                    EdgeInsets.only(bottom: 0, left: 15, right: 5, top: 20),
+                        EdgeInsets.only(bottom: 0, left: 15, right: 5, top: 20),
                     child: RaisedButton(
                       child: Text(
                         "upgrademe",
@@ -2026,7 +2227,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   flex: 1,
                   child: Container(
                     margin:
-                    EdgeInsets.only(bottom: 0, left: 5, right: 15, top: 20),
+                        EdgeInsets.only(bottom: 0, left: 5, right: 15, top: 20),
                     child: RaisedButton(
                       child: Text(
                         "cancel",
@@ -2055,7 +2256,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       builder: (context, snap) {
         return Container(
           child:
-          (snap.hasData && snap.data) ? CircularProgressIndicator() : null,
+              (snap.hasData && snap.data) ? CircularProgressIndicator() : null,
         );
       },
     );
@@ -2069,21 +2270,25 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         shrinkWrap: true,
         itemCount: data?.locationList.length,
         itemBuilder: (BuildContext context, int index) {
-          return InkWell(onTap: () {
-            setState(() {
-              SharedPref pref = SharedPref();
-              pref.save("currentLocation", data?.locationList[index]?.pincode);
-              cuttentLocation = data?.locationList[index]?.pincode;
-            });
-            Navigator.of(context).pop();
-          },
-              child: Column(children: [
-                Text(
-                  data?.locationList[index]?.pincode ?? "",
-                  style: TextStyle(color: Colors.black, fontSize: 14),
-                ),
-                Divider()
-              ],));
+          return InkWell(
+              onTap: () {
+                setState(() {
+                  SharedPref pref = SharedPref();
+                  pref.save(
+                      "currentLocation", data?.locationList[index]?.pincode);
+                  cuttentLocation = data?.locationList[index]?.pincode;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Column(
+                children: [
+                  Text(
+                    data?.locationList[index]?.pincode ?? "",
+                    style: TextStyle(color: Colors.black, fontSize: 14),
+                  ),
+                  Divider()
+                ],
+              ));
         },
       ),
     );
@@ -2092,15 +2297,17 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   gettingCurrentLocationSave() async {
     SharedPref pref = SharedPref();
     var location = await pref.read("currentLocation");
-    if (location!=null && location!='') {
-      cuttentLocation=location;
-    }else{
-      cuttentLocation='';
+    if (location != null && location != '') {
+      cuttentLocation = location;
+    } else {
+      cuttentLocation = '';
     }
   }
+
   LocationData _currentPosition;
   Location location = Location();
-  getlocation() async{
+
+  getlocation() async {
     Navigator.of(context).pop();
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
@@ -2124,7 +2331,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     String error;
     try {
       _currentPosition = await location.getLocation();
-      print('latitude=  '+ _currentPosition.latitude.toString()+"   longitude="+_currentPosition.longitude.toString());
+      print('latitude=  ' +
+          _currentPosition.latitude.toString() +
+          "   longitude=" +
+          _currentPosition.longitude.toString());
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         error = 'please grant permission';
@@ -2138,28 +2348,27 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
 
     getUserLocation();
-
   }
-  getUserLocation() async {//call this async method from whereever you need
-    final coordinates = new Coordinates(
-        _currentPosition.latitude, _currentPosition.longitude);
-    var addresses = await Geocoder.local.findAddressesFromCoordinates(
-        coordinates);
+
+  getUserLocation() async {
+    //call this async method from whereever you need
+    final coordinates =
+        new Coordinates(_currentPosition.latitude, _currentPosition.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
-    print(' ${first.postalCode}, ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
+    print(
+        ' ${first.postalCode}, ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
 
     setState(() {
       SharedPref pref = SharedPref();
       pref.save("currentLocation", first.addressLine);
       pref.save("postalCode", first.postalCode);
-      cuttentLocation =  first.addressLine;
+      cuttentLocation = first.addressLine;
     });
 
     return first;
   }
-
-
-
 
 /*
                     showDialog(
@@ -2186,7 +2395,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                     );*/
 
-
 //----show this dialog after complete your level
   void showCourseCompleteDialog() {
     Dialog errorDialog = Dialog(
@@ -2197,8 +2405,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(margin: EdgeInsets.only(top: 30, bottom: 0, left: 0, right: 0),alignment:Alignment.topCenter,
-              child:  FittedBox(
+            Container(
+              margin: EdgeInsets.only(top: 30, bottom: 0, left: 0, right: 0),
+              alignment: Alignment.topCenter,
+              child: FittedBox(
                 fit: BoxFit.cover,
                 child: SvgPicture.asset(
                   'assets/images/undrawhappybirthday.svg',
@@ -2218,7 +2428,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             Container(
                 margin:
-                EdgeInsets.only(top: 10, bottom: 0, left: 15, right: 15),
+                    EdgeInsets.only(top: 10, bottom: 0, left: 15, right: 15),
                 alignment: Alignment.center,
                 child: Text(
                   'Congratulations your order has been placed successfully',
@@ -2231,7 +2441,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 )),
             Container(
                 margin:
-                EdgeInsets.only(top: 10, bottom: 0, left: 15, right: 15),
+                    EdgeInsets.only(top: 10, bottom: 0, left: 15, right: 15),
                 alignment: Alignment.center,
                 child: Text(
                   'ORDERID : ',
@@ -2257,7 +2467,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 shape: CommonWidgets.buttonshape(),
                 onPressed: () async {
                   Navigator.pop(context);
-
                 },
               ),
             ),
@@ -2282,5 +2491,84 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
     showDialog(
         context: context, builder: (BuildContext context) => errorDialog);
+  }
+
+  versionCheck(context) async {
+    //Get Current installed version of app
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    // double currentVersion = double.parse(info.version.trim());
+    double currentVersion = double.parse(info.buildNumber.trim());
+
+    //Get Latest version info from firebase config
+    final RemoteConfig remoteConfig = await RemoteConfig.instance;
+
+    try {
+      // Using default duration to force fetching from remote server.
+      await remoteConfig.fetch(expiration: const Duration(seconds: 0));
+      await remoteConfig.activateFetched();
+      remoteConfig.getString('force_update_current_version');
+      double newVersion = double.parse(
+          remoteConfig.getString('force_update_current_version').trim());
+      if (newVersion > currentVersion) {
+        _showVersionDialog(context);
+      }
+    } on FetchThrottledException catch (exception) {
+      // Fetch throttled.
+      print(exception);
+    } catch (exception) {
+      print('Unable to fetch remote config. Cached or default values will be '
+          'used');
+    }
+  }
+
+  _showVersionDialog(context) async {
+    await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        String title = "New Update Available";
+        String message =
+            "There is a newer version of app available please update it now.";
+        String btnLabel = "Update Now";
+        String btnLabelCancel = "Later";
+        return Platform.isIOS
+            ? new CupertinoAlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(btnLabel),
+                    onPressed: () => _launchURL(Constants.APP_STORE_URL),
+                  ),
+                  FlatButton(
+                    child: Text(btnLabelCancel),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            : new AlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(btnLabel),
+                    onPressed: () => _launchURL(Constants.PLAY_STORE_URL),
+                  ),
+                  /* FlatButton(
+              child: Text(btnLabelCancel),
+              onPressed: () => Navigator.pop(context),
+            )*/
+                ],
+              );
+      },
+    );
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

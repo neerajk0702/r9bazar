@@ -78,12 +78,12 @@ class CartListPageState extends State<CartListPage> {
                     future: dbHelper.getAllProducts(),
                     builder: (context, AsyncSnapshot<List<Map>> snapshot) {
                       if (snapshot.hasData) {
-                        List<AddTocartLocal> proListl = snapshot.data.isNotEmpty
+                        List<AddTocartLocal> proListl = snapshot?.data?.isNotEmpty
                             ? snapshot.data
                                 .map((c) => AddTocartLocal.fromMap(c))
                                 .toList()
                             : null;
-                        if (proListl == null || proListl.length == 0) {
+                        if (proListl == null || proListl?.length == 0) {
                           Navigator.of(context).pop();
                         }
                         return _buildProductWidget(proListl);
@@ -182,13 +182,15 @@ class CartListPageState extends State<CartListPage> {
             child: Container(
               margin:
                   const EdgeInsets.only(bottom: 10, top: 0, left: 10, right: 8),
-              child: ListView.builder(
+              child:  data!=null?ListView.builder(
                   itemCount: data?.length,
                   // shrinkWrap: true,
                   // physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return _productItemWidget(data[index], index);
-                  }),
+                  }):SizedBox(
+                height: 10,
+              ),
             ),
           ),
           Container(

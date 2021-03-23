@@ -83,6 +83,8 @@ dependencies:
   paytm_allinonesdk: ^1.0.0
   flutter_countdown_timer: ^3.0.1
   webview_flutter: ^0.3.24
+  package_info: ^0.4.3+2
+  firebase_remote_config: ^0.4.0
 
 
 

@@ -47,7 +47,11 @@ class LoginController extends GetxController {
 
   changeError(value) => this._error.value = value;
 
+  final _deliveryLogin = "".obs;
 
+  get deliveryLogin => this._deliveryLogin.value;
+
+  changedeliveryLogin(value) => this._deliveryLogin.value = value;
 
   Future<bool> loginSC() async {
     bool doneFlage=false;
@@ -75,11 +79,13 @@ class LoginController extends GetxController {
                 pref.save("name", data.deliveryBoyDetail.deliveryBoyName);
                 pref.save("password", data.deliveryBoyDetail.deliveryBoypassword);
                 pref.save("phone", data.deliveryBoyDetail.deliveryBoyMobile);
+                pref.save("deliveryLogin", '1');
                 // pref.save("email", data.deliveryBoyDetail.emailId);
                 // pref.save("lname", data.deliveryBoyDetail.lname);
                 pref.save("userId", data.deliveryBoyDetail.deliveryBoyUsername);
                 // changeLoginData(data);
                 changeProcessing(false);
+                changedeliveryLogin('1');
                 print('loginSC done');
                 doneFlage=true;
                 changeError("You have been login successfully");
@@ -93,7 +99,8 @@ class LoginController extends GetxController {
               doneFlage=false;
               changeProcessing(false);
             }
-          }else { //user login
+          }
+          else { //user login
             LoginModel data = await serviceCaller.login(usernameValue, passwordValue,deviceId);
             if (data != null && data.status=='success') {
               SharedPref pref = SharedPref();
@@ -104,8 +111,10 @@ class LoginController extends GetxController {
                 pref.save("email", data.userDetail.emailId);
                 pref.save("lname", data.userDetail.lname);
                 pref.save("userId", data.userDetail.userId);
+                pref.save("deliveryLogin", '0');
                 changeLoginData(data);
                 changeProcessing(false);
+                changedeliveryLogin('0');
                 print('loginSC done');
                 doneFlage=true;
                 changeError("You have been login successfully");

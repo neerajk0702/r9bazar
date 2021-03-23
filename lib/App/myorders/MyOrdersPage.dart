@@ -129,7 +129,7 @@ class MyOrdersPageState extends State<MyOrdersPage> {
 
   Widget _buildProductWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10, top: 0, left: 5, right: 5),
+      margin: const EdgeInsets.only(bottom: 10, top: 0, left: 0, right: 0),
       child: controller?.AccountdetailData?.ordersList != null
           ? ListView.builder(
               itemCount: controller?.AccountdetailData?.ordersList?.length,
@@ -167,119 +167,108 @@ class MyOrdersPageState extends State<MyOrdersPage> {
             borderRadius: BorderRadius.all(Radius.circular(8.0))),
         child: Container(
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-              Row(
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8.0),
                       topRight: Radius.circular(8.0),
-                      bottomLeft: Radius.circular(8.0),
-                      bottomRight: Radius.circular(8.0),
+                      bottomLeft: Radius.circular(0),
+                      bottomRight: Radius.circular(0),
                     ),
                     child: FadeInImage(
-                      height: 130,
-                      width: 130,
+                      height: 160,
                       image: NetworkImage(Constants.imageUrl +
                           data?.folderName +
                           data?.fileName),
                       placeholder: AssetImage('assets/images/placeholder.png'),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                            bottom: 0, top: 5, left: 5, right: 5),
-                        child: Text(
-                          data?.itemOrderId,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
-                        ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: const EdgeInsets.only(
+                        bottom: 0, top: 5, left: 5, right: 5),
+                    child: Text(
+                      data?.itemOrderId,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: const EdgeInsets.only(
+                        bottom: 0, top: 5, left: 5, right: 5),
+                    child: Text(
+                      data?.productName,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
                       ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                            bottom: 0, top: 5, left: 5, right: 5),
-                        child: Text(
-                          data?.productName,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: const EdgeInsets.only(
+                        bottom: 3, top: 5, left: 5, right: 10),
+                    child: Text(
+                      data?.bookingDateTime.toString(),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
                       ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                            bottom: 3, top: 5, left: 5, right: 10),
-                        child: Text(
-                          data?.bookingDateTime.toString(),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: const EdgeInsets.only(
+                        bottom: 3, top: 0, left: 5, right: 10),
+                    child: Text(
+                      "Rs " + data?.grossAmount.toString(),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
                       ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                            bottom: 3, top: 0, left: 5, right: 10),
-                        child: Text(
-                          "Rs " + data?.grossAmount.toString(),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: const EdgeInsets.only(
+                        bottom: 3, top: 0, left: 5, right: 10),
+                    child: Text(
+                      "Gross wt." +
+                          data?.grossweight.toString() +
+                          " | Net wt." +
+                          data?.netweight.toString(),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
                       ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                            bottom: 3, top: 0, left: 5, right: 10),
-                        child: Text(
-                          "Gross wt." +
-                              data?.grossweight.toString() +
-                              " | Net wt." +
-                              data?.netweight.toString(),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    margin: const EdgeInsets.only(
+                        bottom: 10, top: 0, left: 5, right: 10),
+                    child: Text(
+                      getOrderStatus(data?.orderStatus),
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                          fontWeight: FontWeight.bold
                       ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        margin: const EdgeInsets.only(
-                            bottom: 3, top: 0, left: 5, right: 10),
-                        child: Text(
-                          getOrderStatus(data?.orderStatus),
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      // _getProductsaveDetails(data),
-                    ],
-                  ))
-                ],
-              ),
+                    ),
+                  ),
+                  // _getProductsaveDetails(data),
             ])),
       ),
     );

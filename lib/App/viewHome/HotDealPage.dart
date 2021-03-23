@@ -58,7 +58,7 @@ class HotDealPageState extends State<HotDealPage> {
                     child: Obx(() => Container(
                         height: Get.height,
                         margin: const EdgeInsets.only(
-                            bottom: 10, top: 0, left: 5, right: 5),
+                            bottom: 10, top: 0, left: 0, right: 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -168,8 +168,27 @@ class HotDealPageState extends State<HotDealPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Container( height:
-                            CommonUtills.displayHeight(context) / 3.5,
+
+                         /*   Container(
+                              margin: EdgeInsets.all(0),
+                              child:StaggeredGridView.countBuilder(
+                                crossAxisCount: 4,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: data?.deals.length > 6 ? 6 : data?.deals.length,
+                                itemBuilder: (BuildContext context, int index) => Container(
+                                    child:
+                                ),
+                                staggeredTileBuilder: (int index) =>
+                                new StaggeredTile.fit(2),
+                                mainAxisSpacing: 0,
+                                crossAxisSpacing: 0,
+                              ),
+                            ),*/
+
+
+
+                            Container( height:160,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(8.0),
@@ -185,7 +204,7 @@ class HotDealPageState extends State<HotDealPage> {
                                       ""),
                                   placeholder: AssetImage(
                                       'assets/images/placeholder.png'),
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
@@ -198,11 +217,13 @@ class HotDealPageState extends State<HotDealPage> {
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       fontStyle: FontStyle.normal),
                                 ).tr()),
-                            Row(
+                            Container( margin: const EdgeInsets.only(
+                                bottom: 0, top: 0, left: 0, right: 0),
+                              child:  Row(
                               children: [
                                 Container(
                                     margin: const EdgeInsets.only(
@@ -238,8 +259,26 @@ class HotDealPageState extends State<HotDealPage> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),),
                             Container(
+                              alignment: Alignment.centerLeft,
+                              margin: const EdgeInsets.only(
+                                  bottom: 10, top: 0, left: 7, right: 10),
+                              child: Text(
+                                "Gross wt." +
+                                    controller?.HotdealModelData?.deals[index]?.grossweight
+                                        .toString() +
+                                    " | Net wt." +
+                                    controller?.HotdealModelData?.deals[index]?.netweight
+                                        .toString(),
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          /*  Container(
                               alignment: Alignment.centerLeft,
                               margin: const EdgeInsets.only(
                                   bottom: 15, top: 2, left: 7, right: 3),
@@ -254,7 +293,7 @@ class HotDealPageState extends State<HotDealPage> {
                                   fontStyle: FontStyle.normal,
                                 ),
                               ).tr(),
-                            )
+                            )*/
                           ],
                         ),
                       ),

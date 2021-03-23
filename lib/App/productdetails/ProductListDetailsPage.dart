@@ -19,6 +19,7 @@ import '../model/AddTocartLocal.dart';
 import 'CartListPage.dart';
 import 'ProductDetailsModel.dart';
 import 'ProductListDetailsBloc.dart';
+import 'ProductListDetailsController.dart';
 
 class ProductListDetailsPage extends StatefulWidget {
   @override
@@ -42,7 +43,8 @@ class ProductListDetailsPage extends StatefulWidget {
 }
 
 class ProductListDetailsPageState extends State<ProductListDetailsPage> {
-  ProductListDetailsBloc bloc = ProductListDetailsBloc();
+  // ProductListDetailsBloc bloc = ProductListDetailsBloc();
+  final ProductListDetailsController controller = Get.put(ProductListDetailsController());
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   bool insertItem = false;
   bool insertItem1 = false;
@@ -52,7 +54,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    bloc.getProductListData(widget.productsno, widget.catId);
+    controller.getProductListData(widget.productsno, widget.catId);
   }
 
   @override
@@ -61,61 +63,44 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
     return  Scaffold(
         key: _scaffoldkey,
         body: Container(
-            height:CommonUtills.displayHeight(context),
+            height: Get.height,
             width: Get.width,
             color: Colors.white,
             child: Stack(
               children: [
                 Container(
-                  width: double.infinity,
                   color: Colors.transparent,
                   child:  SingleChildScrollView(
                     // scr
                     // ollDirection: Axis.vertical,
-                      child:Container(child: StreamBuilder<ProductDetailsModel>(
-                        stream: bloc.ServiceSubject.stream,
-                        builder: (context,
-                            AsyncSnapshot<ProductDetailsModel> snapshot) {
-                          if (snapshot.hasData) {
-                            if (snapshot.error == null &&
-                                snapshot.data.status == false) {
-                              return _buildErrorWidget(snapshot.data.message);
-                            } else if (snapshot.error == null &&
-                                snapshot.data.isNull) {
-                              return _buildErrorWidget("No Data Found");
-                            } else if (snapshot.error != null ||
-                                snapshot.data.isNull) {
-                              return _buildErrorWidget(snapshot.error);
-                            }
-                            return _buildProductWidget(snapshot.data);
-                          } else if (snapshot.hasError) {
-                            return _buildErrorWidget(snapshot.error);
-                          } else {
-                            return _buildLoadingWidget();
-                          }
-                        },
-                      ),)),)
+                      child:Column(  crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
 
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _topBar(),
+                          Container(  child:Obx(() =>_buildProductWidget(),))
+                      ],)
+
+                      ),),
+                Positioned(
+                  child: Obx(
+                        () => Center(
+                      child: controller.isProcessing
+                          ? SizedBox(
+                        height: 10,
+                      )
+                          : Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 10, left: 0, right: 0),
+                          child: CircularProgressIndicator()),
+                    ),
+                  ),
+                )
               ],
             )));
-  }
-
-  Widget loadingIndicator(ProductListDetailsBloc bloc) => StreamBuilder<bool>(
-        stream: bloc.isLoading,
-        builder: (context, snap) {
-          return Container(
-            child: (snap.hasData && snap.data)
-                ? CircularProgressIndicator()
-                : null,
-          );
-        },
-      );
-
-  Widget _buildLoadingWidget() {
-    return Positioned(
-        child: Center(
-      child: loadingIndicator(bloc),
-    ));
   }
 
   Widget _buildErrorWidget(String message) {
@@ -128,7 +113,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
     ));
   }
 
-  _topBar(ProductDetailsModel data) {
+  _topBar() {
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
       color: MyColors.primaryColor,
@@ -167,7 +152,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
                     // Get.to(CartListPage());
                     Get.to(CartListPage()).then((value){
                       setState(() {
-                        bloc.getProductListData(widget.productsno, widget.catId);});
+                        controller.getProductListData(widget.productsno, widget.catId);});
                     });
                   }
                 },
@@ -185,6 +170,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
                               Icon(Icons.shopping_cart, color: Colors.white),
                             ),
                           ),
+                      Obx(() =>
                           Container(
                             alignment: Alignment.center,
                             width: 20,
@@ -197,14 +183,14 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
                               color: Colors.red,
                             ),
                             child: Text(
-                              data?.totalItem.toString(),
+                              controller.productData?.totalItem.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold),
                             ),
-                          )
+                          ))
                         ],
                       )))
 
@@ -216,15 +202,11 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
     );
   }
 
-  Widget _buildProductWidget(ProductDetailsModel data) {
+  Widget _buildProductWidget() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 20,
-        ),
-        _topBar(data),
         ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(0),
@@ -248,7 +230,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
             widget.productName,
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
         Container(
@@ -259,18 +241,18 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
             widget.aliasName,
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.normal),
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.normal),
           ),
         ),
         Container(
           margin: const EdgeInsets.only(bottom: 10, top: 0, left: 5, right: 5),
           child: ListView.builder(
-              itemCount: data?.subproducts?.length,
+              itemCount: controller?.productData?.subproducts?.length==null?0:controller?.productData?.subproducts?.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return _productItemWidget(data?.subproducts[index], index,data);
+                return _productItemWidget(controller?.productData?.subproducts[index], index,controller?.productData);
               }),
         )
 
@@ -292,13 +274,13 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
             Container(
               alignment: Alignment.centerLeft,
               margin:
-                  const EdgeInsets.only(bottom: 5, top: 5.0, left: 5, right: 5),
+                  const EdgeInsets.only(bottom: 5, top: 5.0, left: 5, right: 10),
               child: Text(
                 data?.aliasName,
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -319,7 +301,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
                             data?.fileName ??
                         ""),
                     placeholder: AssetImage('assets/images/placeholder.png'),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Expanded(
@@ -474,7 +456,7 @@ class ProductListDetailsPageState extends State<ProductListDetailsPage> {
             child: Container(
               height: 42.0,
               width: 130,
-              margin: EdgeInsets.only(top: 16, bottom: 2, left: 5,right: 5),
+              margin: EdgeInsets.only(top: 16, bottom: 2, left: 5,right: 10),
               padding: EdgeInsets.only(top: 5, bottom: 5, left: 2, right: 2),
               alignment: Alignment.center,
               decoration: new BoxDecoration(

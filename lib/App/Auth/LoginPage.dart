@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:rbazaar/App/Auth/SignupPage.dart';
 import 'package:rbazaar/App/Home/HomePage.dart';
+import 'package:rbazaar/App/deliveryboy/DeliveryBoyHomePage.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 
 import 'package:rbazaar/utils/mycolors.dart';
@@ -49,8 +50,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 _topBar(),
                 Container(
-                    margin: EdgeInsets.only(top: 0, left: 10, right: 10),
-                    height: Get.height,
+                    margin: EdgeInsets.only(top: 0, left: 10, right: 10, bottom: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -245,7 +245,11 @@ class LoginPageState extends State<LoginPage> {
         if (await CommonUtills.ConnectionStatus() == true) {
           if (await controller.loginSC()) {
             CommonUtills.flutterToast(controller.errorValue);
-            Get.offAll(HomePage());
+            if(controller.deliveryLogin=='0'){
+              Get.offAll(HomePage());
+            }else{
+              Get.offAll(DeliveryBoyHomePage());
+            }
           } else {
             CommonUtills.flutterToast(controller.errorValue);
           }

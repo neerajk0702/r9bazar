@@ -90,11 +90,11 @@ class DeliveryController extends GetxController {
     return doneFlage;
   }
 
-  /*Future<bool> CancelOrder(int sno,int saleID,String orderID,String reason,String userID) async {
+  Future<bool> deliverOrder(String orderID,int productdispatchsno,String reason) async {
     bool doneFlage=false;
     try {
-      if(reason.length<=10){
-        changeError("Please enter reason for cancel your order more then 10 words!");
+      if(reason.length==0){
+        changeError("Please enter remakrs");
         return doneFlage;
       }
       SharedPref pref = SharedPref();
@@ -102,13 +102,13 @@ class DeliveryController extends GetxController {
       if(userInfo!=null && userInfo!='') {
         if (await CommonUtills.ConnectionStatus() == true) {
           changeProcessing(false);
-          UpdateOrderPaymentStatusModel data = await serviceCaller.CancelOrderSC( sno, saleID, orderID, reason, userID);
-          if(data!=null && data.status=='true'){
+          DeliveryOrderModel data = await serviceCaller.deliverOrderSC(orderID,productdispatchsno,reason,userInfo);
+          if(data!=null && data.status=='Updated'){
             doneFlage=true;
             changeReason("");
-            changeError("Your order has been Canceled successfully");
+            changeError("This order has been deliver successfully");
           }else{
-            changeError("Your order has not been Canceled!");
+            changeError("This order has not been deliver successfully!");
           }
         }else{
           showOfflineToast1();
@@ -121,5 +121,5 @@ class DeliveryController extends GetxController {
     }
 
     return doneFlage;
-  }*/
+  }
 }

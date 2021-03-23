@@ -1,7 +1,6 @@
 class FlashSaleReportModel {
   List<FlashSaleList> flashSaleList;
   String expirydateCount;
-  String endtime;
 
   FlashSaleReportModel({this.flashSaleList, this.expirydateCount});
 
@@ -29,23 +28,29 @@ class FlashSaleReportModel {
 class FlashSaleList {
   int sno;
   String productId;
+  String shortDescription;
   String category;
   String group;
   String subGroup;
   String subCategory;
+  String subProductName;
+  String unit;
+  String grossweight;
+  String weight;
+  String netWeight;
   String productName;
   String applicableMFD;
   String expDate;
   String endtime;
   String expDateforCounter;
-  int minqtyalert;
-  int rate;
-  int tax;
+  double minqtyalert;
+  double rate;
+  double tax;
   double mrp;
   double saleRate;
   double purchaseRate;
   double discount;
-  int size;
+  double size;
   int sequence;
   int categorySno;
   int patternId;
@@ -54,16 +59,21 @@ class FlashSaleList {
   String aliasName;
   String folderName;
   String image1Filename;
-  String image1FilePath;
   int hours;
 
   FlashSaleList(
       {this.sno,
         this.productId,
+        this.shortDescription,
         this.category,
         this.group,
         this.subGroup,
         this.subCategory,
+        this.subProductName,
+        this.unit,
+        this.grossweight,
+        this.weight,
+        this.netWeight,
         this.productName,
         this.applicableMFD,
         this.expDate,
@@ -85,29 +95,34 @@ class FlashSaleList {
         this.aliasName,
         this.folderName,
         this.image1Filename,
-        this.image1FilePath,
         this.hours});
 
   FlashSaleList.fromJson(Map<String, dynamic> json) {
     sno = json['sno'];
     productId = json['productId'];
+    shortDescription = json['shortDescription'];
     category = json['category'];
     group = json['group'];
     subGroup = json['subGroup'];
     subCategory = json['subCategory'];
+    subProductName = json['subProductName'];
+    unit = json['unit'];
+    grossweight = json['grossweight'];
+    weight = json['weight'];
+    netWeight = json['netWeight'];
     productName = json['productName'];
     applicableMFD = json['applicableMFD'];
     expDate = json['expDate'];
     endtime = json['endtime'];
     expDateforCounter = json['expDateforCounter'];
-    minqtyalert = json['minqtyalert'];
-    rate = json['rate'];
-    tax = json['tax'];
+    minqtyalert = double.parse(json['minqtyalert'].toString());
+    rate = double.parse(json['rate'].toString());
+    tax = double.parse(json['tax'].toString());
     mrp = double.parse(json['mrp'].toString());
     saleRate = double.parse(json['sale_Rate'].toString());
     purchaseRate = double.parse(json['purchase_Rate'].toString());
     discount = double.parse(json['discount'].toString());
-    size = json['size'];
+    size = double.parse(json['size'].toString());
     sequence = json['sequence'];
     categorySno = json['categorySno'];
     patternId = json['patternId'];
@@ -116,7 +131,6 @@ class FlashSaleList {
     aliasName = json['alias_Name'];
     folderName = json['folderName'];
     image1Filename = json['image1_Filename'];
-    image1FilePath = json['image1_FilePath'];
     hours = json['hours'];
   }
 
@@ -124,10 +138,16 @@ class FlashSaleList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['sno'] = this.sno;
     data['productId'] = this.productId;
+    data['shortDescription'] = this.shortDescription;
     data['category'] = this.category;
     data['group'] = this.group;
     data['subGroup'] = this.subGroup;
     data['subCategory'] = this.subCategory;
+    data['subProductName'] = this.subProductName;
+    data['unit'] = this.unit;
+    data['grossweight'] = this.grossweight;
+    data['weight'] = this.weight;
+    data['netWeight'] = this.netWeight;
     data['productName'] = this.productName;
     data['applicableMFD'] = this.applicableMFD;
     data['expDate'] = this.expDate;
@@ -149,7 +169,6 @@ class FlashSaleList {
     data['alias_Name'] = this.aliasName;
     data['folderName'] = this.folderName;
     data['image1_Filename'] = this.image1Filename;
-    data['image1_FilePath'] = this.image1FilePath;
     data['hours'] = this.hours;
     return data;
   }

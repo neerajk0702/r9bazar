@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:rbazaar/App/productdetails/ProductListDetailsPage.dart';
 import 'package:rbazaar/App/productlist/ProductListPage.dart';
 import 'package:rbazaar/App/productlist/ProductModel.dart';
 import 'CustomTabView.dart';
-import 'file:///D:/Neeraj/git%20project/rbazaar/lib/App/productdetails/ProductListDetailsPage.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
 import 'package:rbazaar/utils/mycolors.dart';
 import 'SubCategoryBloc.dart';
@@ -262,6 +263,93 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
             height: 10,
           ),
           Container(
+            margin: EdgeInsets.all(0),
+            child:StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: data?.products?.length,
+              itemBuilder: (BuildContext context, int index) => Container(
+                  child:InkWell(
+                    child: Container(
+                      width: Get.width / 2,
+                      color: MyColors.lightblue1,
+                      padding: EdgeInsets.only(
+                          top: 3, bottom: 3, left: 2, right: 2),
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(8.0))),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(height: 160,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8.0),
+                                  topRight: Radius.circular(8.0),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(0),
+                                ),
+                                child: FadeInImage(
+                                  image: NetworkImage(Constants.imageUrl +
+                                      data?.products[index]?.folderName +
+                                      data?.products[index]?.fileName ??
+                                      ""),
+                                  placeholder: AssetImage(
+                                      'assets/images/placeholder.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10, top: 7.0, left: 3, right: 3),
+                              child: Text(
+                                data?.products[index]?.productName,
+                                maxLines: 3,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      print('hello');
+                      /*Get.to(ProductListDetailsPage(productName:data?.products[index]?.productName,catId:widget.catId,
+                          imagePath:Constants.imageUrl +  data?.products[index]?.folderName +  data?.products[index]?.fileName ?? "",
+                          productTitle:data?.products[index]?.productName,productsno:data?.products[index]?.dsno));*/
+
+
+                      Get.to(ProductListDetailsPage(
+                          productName: data?.products[index]?.productName,
+                          catId: widget.catId,
+                          imagePath: Constants.imageUrl +
+                              data?.products[index]?.folderName +
+                              data?.products[index]?.fileName ??
+                              "",
+                          productTitle: data?.products[index]?.productName,
+                          productsno: data?.products[index]?.dsno,
+                          mainproductsno: data?.products[index]?.dsno,
+                          aliasName:data?.products[index]?.aliasName));
+                    },
+                  )
+              ),
+              staggeredTileBuilder: (int index) =>
+              new StaggeredTile.fit(2),
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
+            ),
+          ),
+
+      /*    Container(
               child: GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -294,7 +382,7 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
                                     bottomRight: Radius.circular(0),
                                   ),
                                   child: FadeInImage(
-                                    height: 150,
+                                    height: 160,
                                     image: NetworkImage(Constants.imageUrl +
                                         data?.products[index]?.folderName +
                                         data?.products[index]?.fileName ??
@@ -331,7 +419,7 @@ class SubCategoryTabPageState extends State<SubCategoryTabPage> {
                             productTitle:data?.products[index]?.productName,productsno:data?.products[index]?.dsno));
                       },
                     );
-                  }))
+                  }))*/
         ],
       ),)
 
