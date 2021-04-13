@@ -208,7 +208,7 @@ class DeliveryBoyPageState extends State<DeliveryBoyPage> {
                             margin: const EdgeInsets.only(
                                 bottom: 0, top: 5, left: 5, right: 5),
                             child: Text(
-                              data?.contactpersonName,
+                              "Name: "+data?.contactpersonName,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.black,
@@ -221,7 +221,7 @@ class DeliveryBoyPageState extends State<DeliveryBoyPage> {
                             margin: const EdgeInsets.only(
                                 bottom: 3, top: 5, left: 5, right: 10),
                             child: Text(
-                              data?.contactpersonMobile,
+                              "Mobile: "+data?.contactpersonMobile,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.black,
@@ -234,7 +234,7 @@ class DeliveryBoyPageState extends State<DeliveryBoyPage> {
                             margin: const EdgeInsets.only(
                                 bottom: 3, top: 0, left: 5, right: 10),
                             child: Text(
-                              data?.deliveryAllottedDate,
+                              "Delivery Date: "+data?.deliveryAllottedDate,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.black,
@@ -260,7 +260,7 @@ class DeliveryBoyPageState extends State<DeliveryBoyPage> {
                             margin: const EdgeInsets.only(
                                 bottom: 3, top: 0, left: 5, right: 10),
                             child: Text(
-                              data?.address,
+                              "Address :"+data?.address,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.black,
