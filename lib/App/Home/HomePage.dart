@@ -562,7 +562,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       icon: Icon(Icons.menu, color: Colors.white),
                       onPressed: () =>
                           _scaffoldState.currentState.openDrawer())),
-              InkWell(
+              Expanded(child:  InkWell(
                 onTap: () {
                   showDialog(
                       context: context,
@@ -601,9 +601,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       borderRadius: BorderRadius.only(
                                           topRight: const Radius.circular(5.0),
                                           bottomRight:
-                                              const Radius.circular(5.0),
+                                          const Radius.circular(5.0),
                                           bottomLeft:
-                                              const Radius.circular(5.0),
+                                          const Radius.circular(5.0),
                                           topLeft: const Radius.circular(5.0)),
                                       gradient: LinearGradient(
                                         begin: Alignment.topCenter,
@@ -618,9 +618,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      CrossAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.add_location,
@@ -668,7 +668,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ]),
                   ),
                 ),
-              )
+              ),)
+
             ],
           )),
           /* Expanded(
