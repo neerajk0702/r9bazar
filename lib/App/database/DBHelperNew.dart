@@ -1,5 +1,5 @@
 import 'package:path/path.dart' show join;
-import 'file:///D:/Neeraj/git%20project/rbazaar/lib/App/model/AddTocartLocal.dart';
+import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io' as io;
 import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;

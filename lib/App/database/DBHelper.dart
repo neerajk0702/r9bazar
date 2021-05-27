@@ -1,5 +1,5 @@
 import 'package:path/path.dart';
-import 'file:///D:/Neeraj/git%20project/rbazaar/lib/App/model/AddTocartLocal.dart';
+import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io' as io;

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rbazaar/App/productlist/ProductListPage.dart';
-import 'file:///D:/Neeraj/git%20project/rbazaar/lib/App/productdetails/ProductListDetailsPage.dart';
 import 'package:rbazaar/Global/GlobalConstants.dart';
 import 'package:rbazaar/utils/mycolors.dart';
 import 'SubCategoryBloc.dart';

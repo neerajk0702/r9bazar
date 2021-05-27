@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'file:///D:/Neeraj/git%20project/rbazaar/lib/App/model/AddTocartLocal.dart';
+import 'package:rbazaar/App/model/AddTocartLocal.dart';
 import 'package:rbazaar/App/productdetails/ProductDetailsModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;

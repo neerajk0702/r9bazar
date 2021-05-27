@@ -77,7 +77,7 @@ class AddTocartLocal {
     };
     return map;
   }
- /* AddTocartLocal.fromMap(Map<String, dynamic> json):
+  /* AddTocartLocal.fromMap(Map<String, dynamic> json):
         dsno = json['dsno'],
         productName = json['productName'],
         aliasName = json['aliasName'],

@@ -14,7 +14,7 @@ class DeliveryServicecaller {
     Dio dio = await getInterceptors();
     try {
       Response response = await dio
-          .post("${Constants.AppBaseUrl}DeliveryBoyOrderdetailAPI?couriername=&mobileno=&city=&deliverydate=&state=&courierid=0&orderby=&stateid=0&cityid=0&orderid=&orderstatus=&allotedstatus=&deliveryboy=${'1234567890'}&courierdeliveredstatus=&fromdate=&todate=");
+          .post("${Constants.AppBaseUrl}DeliveryBoyOrderdetailAPI?couriername=&mobileno=&city=&deliverydate=&state=&courierid=0&orderby=&stateid=0&cityid=0&orderid=&orderstatus=&allotedstatus=&deliveryboy=${phone}&courierdeliveredstatus=&fromdate=&todate=");
       print(
           'url= ' + "${Constants.AppBaseUrl}DeliveryBoyOrderdetailAPI?couriername=&mobileno=&city=&deliverydate=&state=&courierid=0&orderby=&stateid=0&cityid=0&orderid=&orderstatus=&allotedstatus=&deliveryboy=${phone}&courierdeliveredstatus=&fromdate=&todate=");
       return DeliveryOrderModel.fromJson(response.data);
