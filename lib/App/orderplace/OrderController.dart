@@ -443,7 +443,7 @@ class OrderController extends GetxController {
       double totaldiscountRate = (tempSaleRate * data[i].discountpercent) / 100;
       finalDisAmount = finalDisAmount + totaldiscountRate;
     }
-    finalAmount = totalSaleRate - finalDisAmount - int.parse(deliverycharge);
+    finalAmount = (totalSaleRate - finalDisAmount) + int.parse(deliverycharge);
     return finalAmount.toString();
   }
 

@@ -230,7 +230,7 @@ class MyOrdersPageState extends State<MyOrdersPage> {
                     margin: const EdgeInsets.only(
                         bottom: 3, top: 0, left: 5, right: 10),
                     child: Text(
-                      "Rs " + data?.grossAmount.toString(),
+                      "Rs " + gettotalAmount(data?.grossAmount,data?.shippingCharge),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.black,
@@ -273,7 +273,10 @@ class MyOrdersPageState extends State<MyOrdersPage> {
       ),
     );
   }
-
+gettotalAmount(double grossAmount,double shippingCharge){
+  double total=grossAmount+shippingCharge;
+  return total.toString();
+}
   getOrderStatus(String orderStatus) {
     if (orderStatus == 'P') {
       return 'Pending';

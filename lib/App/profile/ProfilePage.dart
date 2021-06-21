@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:rbazaar/App/Auth/LoginPage.dart';
 import 'package:rbazaar/App/Home/HomePage.dart';
 import 'package:rbazaar/App/SharedPreferences/SharedPref.dart';
+import 'package:rbazaar/App/address/AddressPage.dart';
 import 'package:rbazaar/App/address/CityModel.dart';
 import 'package:rbazaar/utils/commonutills.dart';
 import 'package:rbazaar/utils/commonwidgets.dart';
@@ -236,6 +237,40 @@ class ProfilePageState extends State<ProfilePage> {
                                     cursorColor: Colors.black,
                                     style: TextStyle(color: Colors.black),
                                   )),
+
+                              InkWell(onTap: () async {
+                                SharedPref pref = SharedPref();
+                                var userInfo = await pref.read("userId");
+                                if (userInfo != null && userInfo != '') {
+                                  Get.to(AddressPage(phone: userInfo,screenFlag:1));
+                                  // Get.to(OrderPlacePage(addressSno:1));
+                                } else {
+                                  Get.to(LoginPage());
+                                }
+                              },
+                                  child:  Container(  margin: const EdgeInsets.only(
+                                  bottom: 0, top: 20, left: 10, right: 10),
+                                  child: Row(children: [
+                                    Expanded(child:  Container(
+                                      child: Text(
+                                        "Delivery Address",
+                                        style: TextStyle(
+                                            color: MyColors.primaryColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),),
+                                    Container(height:25,width: 25,child:  Icon(
+                                      Icons.arrow_forward,
+                                      size: 30.0,
+                                      color: MyColors.primaryColor,
+                                    )
+                                    )
+
+                                  ],))
+                              )
+
+
                             ],
                           ),
                         ))),

@@ -2499,6 +2499,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final PackageInfo info = await PackageInfo.fromPlatform();
     // double currentVersion = double.parse(info.version.trim());
     double currentVersion = double.parse(info.buildNumber.trim());
+    print("App currentVersion= "+currentVersion.toString());
 
     //Get Latest version info from firebase config
     final RemoteConfig remoteConfig = await RemoteConfig.instance;
@@ -2510,6 +2511,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       remoteConfig.getString('force_update_current_version');
       double newVersion = double.parse(
           remoteConfig.getString('force_update_current_version').trim());
+      print("App firbase currentVersion= "+newVersion.toString());
       if (newVersion > currentVersion) {
         _showVersionDialog(context);
       }

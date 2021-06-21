@@ -440,7 +440,7 @@ class MyOrderDetailsPageState extends State<MyOrderDetailsPage> {
                                       margin: const EdgeInsets.only(
                                           bottom: 0, top: 3, left: 5, right: 5),
                                       child: Text(
-                                        "Total:",
+                                        "SubTotal:",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             color: Colors.black,
@@ -457,6 +457,77 @@ class MyOrderDetailsPageState extends State<MyOrderDetailsPage> {
                                       "Rs " +
                                           widget.product?.grossAmount
                                               .toString(),
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      margin: const EdgeInsets.only(
+                                          bottom: 0, top: 3, left: 5, right: 5),
+                                      child: Text(
+                                        "Shipping Charges:",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    margin: const EdgeInsets.only(
+                                        bottom: 0, top: 3, left: 5, right: 5),
+                                    child: Text(
+                                      "Rs " +
+                                          widget.product?.shippingCharge
+                                              .toString(),
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      margin: const EdgeInsets.only(
+                                          bottom: 0, top: 3, left: 5, right: 5),
+                                      child: Text(
+                                        "Total:",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    margin: const EdgeInsets.only(
+                                        bottom: 0, top: 3, left: 5, right: 5),
+                                    child: Text(
+                                      "Rs " +
+                                          (widget.product?.grossAmount +widget.product?.shippingCharge).toString(),
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           color: Colors.black,

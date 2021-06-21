@@ -28,8 +28,9 @@ class AddressPage extends StatefulWidget {
   String phone;
   int selectPosition;
   int addressSno=0;
+  int screenFlag=0;
 
-  AddressPage({this.phone});
+  AddressPage({this.phone,this.screenFlag});
 }
 
 class AddressPageState extends State<AddressPage> {
@@ -74,7 +75,8 @@ String pincodeSelect='';
                               child: _buildAddressWidget(),
                             ))),
                   ),
-                  Container(
+                  Visibility(visible: widget.screenFlag==1?false:true,
+                  child:   Container(
                       height: 50,
                       child: InkWell(
                           onTap: () async {
@@ -103,7 +105,8 @@ String pincodeSelect='';
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
-                              ))))
+                              )))))
+
                 ],
               ),
               Positioned(
@@ -159,7 +162,7 @@ String pincodeSelect='';
                     icon:
                         Icon(FontAwesomeIcons.plusCircle, color: Colors.white),
                     onPressed: () {
-                      Get.to(AddEditAddressPage());
+                      Get.to(AddEditAddressPage()).then((value) =>  controller.getAddressListData(widget.phone));
                     },
                   ),
                 )
@@ -217,7 +220,7 @@ String pincodeSelect='';
                   icon:
                   Icon(FontAwesomeIcons.plusCircle, color: MyColors.primaryColor),
                   onPressed: () {
-                    Get.to(AddEditAddressPage());
+                    Get.to(AddEditAddressPage()).then((value) =>  controller.getAddressListData(widget.phone));
                   },
                 ),
               )

@@ -289,7 +289,7 @@ class CartListPageState extends State<CartListPage> {
                 SharedPref pref = SharedPref();
                 var userInfo = await pref.read("userId");
                 if (userInfo != null && userInfo != '') {
-                  Get.to(AddressPage(phone: userInfo));
+                  Get.to(AddressPage(phone: userInfo,screenFlag:2));
                   // Get.to(OrderPlacePage(addressSno:1));
                 } else {
                   Get.to(LoginPage());
